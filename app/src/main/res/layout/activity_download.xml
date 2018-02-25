@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CalendarView
+        android:id="@+id/downloadCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:firstDayOfWeek="2"
+        android:layout_above="@+id/buttonOK"
+        android:layout_alignParentTop="true"
+        android:selectedWeekBackgroundColor="#00ff0000"
+        android:selectedDateVerticalBar="@drawable/date_vertical_bar"
+        android:weekNumberColor="#0000ff"
+        android:weekSeparatorLineColor="#00ff00" >
+    </CalendarView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/stOK"
+        android:id="@+id/buttonOK"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"/>
+
+</RelativeLayout>

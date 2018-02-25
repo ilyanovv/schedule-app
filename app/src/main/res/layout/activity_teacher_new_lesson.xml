@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stSave"
+        android:id="@+id/save_button_t"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/stLessonName"
+        android:id="@+id/textViewM_t"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name1_t"
+        android:layout_below="@+id/textViewM_t"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/stLessonType"
+        android:id="@+id/textView2M_t"
+        android:layout_below="@+id/name1_t"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:id="@+id/type1_t"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2M_t"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    </Spinner>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/stGroupsName"
+        android:id="@+id/textView3M_t"
+        android:layout_toRightOf="@+id/groups1_t"
+        android:layout_below="@+id/type1_t"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/groups1_t"
+        android:layout_below="@+id/textView3M_t"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/type1_t"
+        android:layout_alignEnd="@+id/type1_t" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Начало:  "
+        android:id="@+id/textViewBeginTime_t"
+        android:layout_below="@+id/groups1_t"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/editTextBeginTime_t"
+        android:layout_centerVertical="true"
+        android:layout_alignBottom="@+id/textViewBeginTime_t"
+        android:layout_toRightOf="@+id/textViewBeginTime_t" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Конец:"
+        android:id="@+id/textViewEndTime_t"
+        android:layout_below="@+id/editTextBeginTime_t"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/editTextEndTime_t"
+        android:layout_alignBottom="@+id/textViewEndTime_t"
+        android:layout_alignLeft="@+id/editTextBeginTime_t"
+        android:layout_alignStart="@+id/editTextBeginTime_t" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Аудитория:   "
+        android:id="@+id/textViewLessonRoom_t"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/textViewEndTime_t"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextLessonRoom_t"
+        android:layout_alignBottom="@+id/textViewLessonRoom_t"
+        android:layout_toRightOf="@+id/textViewLessonRoom_t"
+        android:layout_alignRight="@+id/editTextEndTime_t"
+        android:layout_alignEnd="@+id/editTextEndTime_t" />
+
+</RelativeLayout>

@@ -1,0 +1,25 @@
+https://www.youtube.com/watch?v=ATPGPLh1KRI
+
+https://www.youtube.com/watch?v=SbWzaPtvzJA&list=PLyfVjOYzujugap6Rf3ETNKkx4v9ePllNK&index=3
+
+https://www.youtube.com/watch?v=Ar9_FUFJhDU
+
+http://developer.android.com/tools/devices/emulator.html#vm-windows
+
+http://www.cherneenet.ru/lokalnaj_zapis.html
+
+http://tleyden.github.io/blog/2013/11/22/android-studio-plus-genymotion-emulator/
+
+http://developer.alexanderklimov.ru/android/activity.php     !!!!!!!
+
+
+
+
+http://awesomedevelop.blogspot.ru/2015/01/android.html
+http://www.cyberforum.ru/android-dev/thread1511089.html
+http://startandroid.ru/ru/uroki/vse-uroki-spiskom/79-urok-39-onupgrade-obnovljaem-bd-v-sqlite.html
+http://startandroid.ru/ru/uroki/vse-uroki-spiskom/107-urok-48-ispolzuem-simpleadapter.html
+https://habrahabr.ru/post/133503/
+http://androiddocs.ru/listview-arrayadapter-i-metod-notifydatasetchanged/
+http://ru.stackoverflow.com/questions/472364/%D0%A4%D0%BE%D1%80%D0%BC%D0%B0-%D1%80%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D0%B8-%D0%A1-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E-%D1%87%D0%B5%D0%B3%D0%BE-%D0%B5%D0%B5-%D0%B3%D1%80%D0%B0%D0%BC%D0%BE%D1%82%D0%BD%D0%BE-%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C
+
