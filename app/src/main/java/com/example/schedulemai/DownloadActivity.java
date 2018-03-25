@@ -11,23 +11,32 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 
+import com.example.schedulemai.student.StudentScheduleActivity;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 
 public class DownloadActivity extends Activity {
 
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-        final CalendarView calView = (CalendarView)findViewById(R.id.downloadCalendar);
-        Button buttonOK = (Button)findViewById(R.id.buttonOK);
+        final CalendarView calView = findViewById(R.id.downloadCalendar);
+        calView.setOnDateChangeListener((calendarView, year, month, day) -> {
+            Locale locale = new Locale("ru", "RU");
+            Calendar c = Calendar.getInstance();
+            c.set(year, month, day);
+            calendarView.setDate(c.getTimeInMillis());
+        });
+
+
+        Button buttonOK = (Button) findViewById(R.id.buttonOK);
         buttonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(DownloadActivity.this, StudentScheduleActivity.class);
                 Locale locale = new Locale("ru", "RU");
                 SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", locale);

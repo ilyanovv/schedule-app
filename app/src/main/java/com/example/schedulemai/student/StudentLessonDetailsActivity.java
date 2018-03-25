@@ -1,4 +1,4 @@
-package com.example.schedulemai;
+package com.example.schedulemai.student;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,10 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.schedulemai.R;
+import com.example.schedulemai.lesson.Lesson;
+
 /**
  * Created by Илья on 13.02.2016.
  */
-public class TeacherLessonDetailsActivity extends Activity {
+public class StudentLessonDetailsActivity extends Activity {
 
     public class Position
     {
@@ -37,12 +40,12 @@ public class TeacherLessonDetailsActivity extends Activity {
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Lesson oldLesson = TeacherScheduleActivity.dc.get_from_db(position);
-                Log.e("dcsize", Integer.toString(TeacherScheduleActivity.dc.size_db()));
-                Intent intent = new Intent(TeacherLessonDetailsActivity.this, TeacherScheduleActivity.class);
+                Lesson oldLesson = StudentScheduleActivity.dc.get_from_db(position);
+                Log.e("dcsize", Integer.toString(StudentScheduleActivity.dc.size_db()));
+                Intent intent = new Intent(StudentLessonDetailsActivity.this, StudentScheduleActivity.class);
                 intent.putExtra("key", "remove");
                 intent.putExtra("dateSt", oldLesson.date);
-                TeacherScheduleActivity.dc.remove_from_db(position, TeacherLessonDetailsActivity.this);
+                StudentScheduleActivity.dc.remove_from_db(position, StudentLessonDetailsActivity.this);
                 startActivity(intent);
                 finish();
             }
@@ -54,10 +57,10 @@ public class TeacherLessonDetailsActivity extends Activity {
             @Override
 
             public void onClick(View v) {
-                Intent intent1 = new Intent(TeacherLessonDetailsActivity.this, TeacherModifyLessonActivity.class);
+                Intent intent1 = new Intent(StudentLessonDetailsActivity.this, StudentModifyLessonActivity.class);
                 Log.e("", "Intent1 created");
                 pos.pos = position;
-                Lesson oldLesson = TeacherScheduleActivity.dc.get_from_db(pos.pos);
+                Lesson oldLesson = StudentScheduleActivity.dc.get_from_db(pos.pos);
                 setLessonExtras(intent1, oldLesson); //кладем extras, чтобы вывести предыдущие значения на форму
                 startActivityForResult(intent1, 1);
             }
@@ -77,9 +80,9 @@ public class TeacherLessonDetailsActivity extends Activity {
                 Log.e("dgfjgkerg", "");
                 return;
             }
-            Lesson oldLesson = TeacherScheduleActivity.dc.get_from_db(pos.pos);
-            TeacherScheduleActivity.dc.modify_db(pos.pos, new_lesson(extras, oldLesson), TeacherLessonDetailsActivity.this);
-            Intent intent2 = new Intent(TeacherLessonDetailsActivity.this, TeacherScheduleActivity.class);
+            Lesson oldLesson = StudentScheduleActivity.dc.get_from_db(pos.pos);
+            StudentScheduleActivity.dc.modify_db(pos.pos, new_lesson(extras, oldLesson), StudentLessonDetailsActivity.this);
+            Intent intent2 = new Intent(StudentLessonDetailsActivity.this, StudentScheduleActivity.class);
             intent2.putExtra("key", "update");
             intent2.putExtra("dateSt", oldLesson.date);
             startActivity(intent2);
@@ -90,14 +93,14 @@ public class TeacherLessonDetailsActivity extends Activity {
 
     private Lesson new_lesson(Bundle savedInstanceState, Lesson oldLesson) {
         String name = (String) savedInstanceState.get("lesson_name");
-        String teacher = null;
+        String teacher = (String) savedInstanceState.get("teacher_fn");
         String type = (String) savedInstanceState.get("lesson_type");
         String begin_time = savedInstanceState.getString("time_begin");
         String end_time = savedInstanceState.getString("time_end");
         String date = oldLesson.date;
         String classroom = savedInstanceState.getString("lecture_room");
-        String groups = (String) savedInstanceState.get("groups");
-        return Lesson.CreateNewLesson(type, name, teacher, begin_time, end_time, classroom, date, groups);
+        String groups = null;
+        return Lesson.CreateNewLesson(type, name, teacher, begin_time, end_time, classroom, date, groups, null);
     }
 
     private void setLessonExtras(Intent intent, Lesson lesson){
@@ -107,6 +110,7 @@ public class TeacherLessonDetailsActivity extends Activity {
         intent.putExtra("time_begin", lesson.begin_time);
         intent.putExtra("time_end", lesson.end_time);
         intent.putExtra("lesson_date", lesson.date);
-        intent.putExtra("groups", lesson.group_number);
+        intent.putExtra("teacher_fn", lesson.teacher);
+        intent.putExtra("record_id", lesson.record_id);
     }
 }

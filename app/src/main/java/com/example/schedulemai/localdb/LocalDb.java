@@ -1,4 +1,6 @@
-package com.example.schedulemai;
+package com.example.schedulemai.localdb;
+
+import com.example.schedulemai.lesson.Lesson;
 
 import java.util.ArrayList;
 
@@ -6,6 +8,7 @@ import java.util.ArrayList;
  * Created by Илья on 13.02.2016.
  */
 public class LocalDb {
+    private static ArrayList<Lesson> lessons;
     public LocalDb() {
         lessons = new ArrayList<Lesson>();
     }
@@ -30,6 +33,5 @@ public class LocalDb {
     public int size() {
         return lessons.size();
     }
-    static private ArrayList<Lesson> lessons;
 }
 

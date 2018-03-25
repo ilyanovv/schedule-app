@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".AuthenticationActivity">
+    tools:context=".authentication.AuthenticationActivity">
 
     <TextView
         android:id="@+id/tvUserType"
@@ -55,11 +55,51 @@
         android:layout_below="@id/tvTeacherName">
     </Spinner>
 
+
+    <TextView
+        android:id="@+id/tvLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loginSt"
+        android:layout_below="@id/spinnerGroupNumber"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextLogin"
+        android:layout_below="@id/tvLogin"/>
+
+    <TextView
+        android:id="@+id/tvPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/passwordSt"
+        android:layout_below="@id/editTextLogin"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextPassword"
+        android:inputType="textPassword"
+        android:layout_below="@id/tvPassword"/>
+
     <Button
         android:id="@+id/buttonGroupNumberOrTeacherName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/stNext"
+        android:enabled="false"
+        android:layout_alignParentBottom="true" />
+
+    <Button
+        android:id="@+id/buttonRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/stRefresh"
+        android:visibility="gone"
+        android:enabled="false"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

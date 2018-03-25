@@ -1,29 +1,15 @@
-package com.example.schedulemai;
+package com.example.schedulemai.localdb;
 
 /**
  * Created by Илья on 13.02.2016.
  */
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 /* локальная база данных изменений и добавлений, сделанных пользователем.
 При загрузке новых данных из удаленной БД данные из этой базы также добавляются

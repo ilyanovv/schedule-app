@@ -1,21 +1,36 @@
-package com.example.schedulemai;
+package com.example.schedulemai.teacher;
 
 /**
  * Created by Илья on 13.02.2016.
  */
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.schedulemai.DownloadActivity;
+import com.example.schedulemai.R;
+import com.example.schedulemai.SP;
+import com.example.schedulemai.authentication.AuthenticationActivity;
+import com.example.schedulemai.lesson.Lesson;
+import com.example.schedulemai.localdb.DataController;
+import com.example.schedulemai.localdb.TeacherDataController;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,14 +39,15 @@ import java.util.Locale;
 import java.util.Map;
 
 //TODO: при удалении/изменении занятия возвращаться на ту же дату
-public class StudentScheduleActivity extends Activity {
+public class TeacherScheduleActivity extends AppCompatActivity {
 
     Context cont = this;
-    public static DataController dc = new StudentDataController();
+    public static DataController dc = new TeacherDataController();
+    SimpleAdapter adapter;
 
     final String ATTRIBUTE_LESSON_NAME = "lesson_name";
     final String ATTRIBUTE_LESSON_TYPE = "lesson_type";
-    final String ATTRIBUTE_LESSON_TEACHER = "lesson_teacher";
+    final String ATTRIBUTE_LESSON_GROUPS = "lesson_groups";
     final String ATTRIBUTE_LESSON_TIME = "lesson_time";
     final String ATTRIBUTE_LESSON_ROOM = "lesson_room";
     final String ATTRIBUTE_LESSON_COLOR = "lesson_color";
@@ -41,15 +57,15 @@ public class StudentScheduleActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_schedule);
+        setContentView(R.layout.activity_teacher_schedule);
     }
 
     @Override
     protected  void onResume(){
         super.onResume();
+        Log.e("onResume:", "TeacherScheduleActivity");
+
         dateSt = null;
-
-
         Bundle extras = getIntent().getExtras();
         Date curDate;
         if(extras == null)
@@ -70,7 +86,7 @@ public class StudentScheduleActivity extends Activity {
          */
         Locale locale = new Locale("ru", "RU");
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, EEEE", locale); //Date and time
-        TextView dateTextView = (TextView) findViewById(R.id.dateText);
+        TextView dateTextView = (TextView) findViewById(R.id.dateText_t);
         String str = sdf.format(curDate);
         dateTextView.setText(str);
 
@@ -80,10 +96,10 @@ public class StudentScheduleActivity extends Activity {
         dc.update_db(dateSt, cont);
 
         Lesson lesson = null;
-        ListView lv = (ListView) findViewById(R.id.lessons);
+        ListView lv = (ListView) findViewById(R.id.lessons_t);
         String[] lessons_names = new String[dc.size_db()];
         String[] lessons_types = new String[dc.size_db()];
-        String[] lessons_teachers = new String[dc.size_db()];
+        String[] lessons_groups = new String[dc.size_db()];
         String[] lessons_time = new String[dc.size_db()];
         String[] lessons_rooms = new String[dc.size_db()];
         int[] lessons_colors = new int[dc.size_db()];
@@ -91,7 +107,7 @@ public class StudentScheduleActivity extends Activity {
             lesson = dc.get_from_db(i);
             lessons_names[i] = lesson.name;
             lessons_types[i] = lesson.type;
-            lessons_teachers[i] = lesson.teacher;
+            lessons_groups[i] = lesson.group_number;
             lessons_time[i] = lesson.begin_time + " - " + lesson.end_time;
             lessons_rooms[i] = lesson.classroom;
             lessons_colors[i] = 0xaaff00;
@@ -106,7 +122,7 @@ public class StudentScheduleActivity extends Activity {
             m = new HashMap<String, Object>();
             m.put(ATTRIBUTE_LESSON_NAME, lessons_names[i]);
             m.put(ATTRIBUTE_LESSON_TYPE, lessons_types[i]);
-            m.put(ATTRIBUTE_LESSON_TEACHER, lessons_teachers[i]);
+            m.put(ATTRIBUTE_LESSON_GROUPS, lessons_groups[i]);
             m.put(ATTRIBUTE_LESSON_COLOR, lessons_colors[i]);
             m.put(ATTRIBUTE_LESSON_TIME, lessons_time[i]);
             m.put(ATTRIBUTE_LESSON_ROOM, lessons_rooms[i]);
@@ -114,18 +130,18 @@ public class StudentScheduleActivity extends Activity {
         }
 
         // массив имен атрибутов, из которых будут читаться данные
-        String[] from = { ATTRIBUTE_LESSON_NAME, ATTRIBUTE_LESSON_TYPE, ATTRIBUTE_LESSON_TEACHER,
+        String[] from = { ATTRIBUTE_LESSON_NAME, ATTRIBUTE_LESSON_TYPE, ATTRIBUTE_LESSON_GROUPS,
                 ATTRIBUTE_LESSON_TIME, ATTRIBUTE_LESSON_ROOM, ATTRIBUTE_LESSON_TYPE};
         // массив ID View-компонентов, в которые будут вставлять данные
-        int[] to = { R.id.schedule_item1, R.id.schedule_item2, R.id.schedule_item3,
-                R.id.schedule_item4, R.id.schedule_item5, R.id.schedule_item_layout};
+        int[] to = { R.id.schedule_item1t, R.id.schedule_item2t, R.id.schedule_item3t,
+                R.id.schedule_item4t, R.id.schedule_item5t, R.id.schedule_item_layout_t};
 
 
 
         /*ArrayAdapter<String> groupNumberAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
                 lessons);*/
-        SimpleAdapter adapter = new SimpleAdapter(this, data, R.layout.schedule_item_student, from, to);
+        adapter = new SimpleAdapter(this, data, R.layout.schedule_item_teacher, from, to);
         adapter.setViewBinder(new MyViewBinder());
         lv.setAdapter(adapter);
 
@@ -134,7 +150,7 @@ public class StudentScheduleActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
                                     long id) {
-                Intent intent = new Intent(StudentScheduleActivity.this, StudentLessonDetailsActivity.class);
+                Intent intent = new Intent(TeacherScheduleActivity.this, TeacherLessonDetailsActivity.class);
                 intent.putExtra("position", position);
                 //Log.e("pos", Integer.toString(position));
                 startActivity(intent);
@@ -144,11 +160,11 @@ public class StudentScheduleActivity extends Activity {
 
 
 
-        Button add_button = (Button) findViewById(R.id.add_button);
+        Button add_button = (Button) findViewById(R.id.add_button_t);
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StudentScheduleActivity.this, StudentNewLessonActivity.class);
+                Intent intent = new Intent(TeacherScheduleActivity.this, TeacherNewLessonActivity.class);
                 intent.putExtra("curDate", dateSt);
                 startActivity(intent);
                 //finish();
@@ -156,11 +172,11 @@ public class StudentScheduleActivity extends Activity {
         });
 
 
-        Button downloadButton = (Button) findViewById(R.id.download_button);
+        Button downloadButton = (Button) findViewById(R.id.download_button_t);
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StudentScheduleActivity.this, DownloadActivity.class);
+                Intent intent = new Intent(TeacherScheduleActivity.this, DownloadActivity.class);
                 Log.e("start", "");
                 startActivity(intent);
                 finish();
@@ -173,17 +189,19 @@ public class StudentScheduleActivity extends Activity {
         super.onNewIntent(intent);
         // getIntent() should always return the most recent
         Log.e("onNewIntent", Integer.toString(dc.size_db()));
-        Log.e("onNewIntent", intent.getExtras().getString("dateSt"));
         setIntent(intent);
 
     }
 
-  /*  @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        onCreate(intent.getExtras());
-        setIntent(intent);
-    }*/
+
+    @Override
+    public void onDestroy(){
+        // Очистите все ресурсы. Это касается завершения работы
+        // потоков, закрытия соединений с базой данных и т. д.
+        dc.database.close();
+        dc.database = null;
+        super.onDestroy();
+    }
 
 
     class MyViewBinder implements SimpleAdapter.ViewBinder {
@@ -193,9 +211,9 @@ public class StudentScheduleActivity extends Activity {
                                     String textRepresentation) {
             switch (view.getId()) {
                 // LinearLayout
-                case R.id.schedule_item_layout:
+                case R.id.schedule_item_layout_t:
                     String lessonType =  data.toString();
-                    view.setBackgroundResource(getBackgroundStyle(lessonType));
+                    view.setBackgroundResource(Lesson.getBackgroundStyle(lessonType));
                     return true;
             }
             return false;
@@ -203,19 +221,69 @@ public class StudentScheduleActivity extends Activity {
     }
 
 
-    public static int getBackgroundStyle(String lessonType) {
-        switch (lessonType){
-            case "Лабораторная":
-                return R.drawable.lab_back;
-            case "Семинар":
-                return R.drawable.sem_back;
-            case "Лекция":
-                return R.drawable.lection_back;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        /*super.onCreateOptionsMenu(menu);
+
+        menu.add(0        // Группа
+                ,0        // id
+                ,0        //порядок
+                ,"Сменить пользователя");  // заголовок*/
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_change_user:
+                new TestConnectionTask().execute();
+                return true;
             default:
-                return Color.RED;
+                return super.onOptionsItemSelected(item);
         }
     }
+
+    private class TestConnectionTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(TeacherScheduleActivity.this);
+            SharedPreferences.Editor editor = sPref.edit();
+            try { //пробуем подключиться к серверу: если не получилось, то пользователя не меняем
+                URL url = new URL(SP.ROOT_SERVICE_URL + "/get_all_groups");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+            } catch (Exception e) {
+                cancel(false);
+                while (!isCancelled()){
+                    //  Log.e("HERE", "notCancelled");
+                }
+                return null;
+            }
+            editor.putString(SP.SP_GROUP_ID, null);
+            editor.putString(SP.SP_TEACHER_ID, null);
+            editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
+            editor.putInt(SP.SP_GLOBAL_DB_VERSION, -1);
+            editor.putString(SP.SP_USER_TYPE, null);
+            editor.apply();
+            Intent intent = new Intent(TeacherScheduleActivity.this, AuthenticationActivity.class);
+            startActivity(intent);
+            finish();
+            return null;
+        }
+
+        @Override
+        protected void onCancelled() {
+            Toast toast = Toast.makeText(TeacherScheduleActivity.this,
+                    "Не удалось подключиться к серверу", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
 }
+
 
 
 

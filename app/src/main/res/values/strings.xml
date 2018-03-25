@@ -26,4 +26,12 @@
     <string name="user_type">Выберите тип пользователя:</string>
     <string name="teacher_name">Имя преподавателя</string>
     <string name="stGroupsName">Группы:</string>
+    <string name="stRefresh">Обновить</string>
+    <string name="change_user">Сменить пользователя</string>
+    <string name="loginSt">Логин:</string>
+    <string name="passwordSt">Пароль:</string>
+    <string name="stBuilding">Корпус</string>
+    <string name="stRoom">Аудитория</string>
+    <string name="stDeleteToday">Удалить только сегодня</string>
+    <string name="stDeleteAlways">Удалить на каждой неделе</string>
 </resources>
