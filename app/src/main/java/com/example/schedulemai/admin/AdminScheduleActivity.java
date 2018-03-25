@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -21,12 +21,12 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.schedulemai.authentication.AuthenticationActivity;
-import com.example.schedulemai.localdb.DataController;
 import com.example.schedulemai.DownloadActivity;
-import com.example.schedulemai.lesson.Lesson;
 import com.example.schedulemai.R;
 import com.example.schedulemai.SP;
+import com.example.schedulemai.authentication.AuthenticationActivity;
+import com.example.schedulemai.lesson.Lesson;
+import com.example.schedulemai.localdb.DataController;
 import com.example.schedulemai.localdb.StudentDataController;
 
 import java.io.BufferedWriter;
@@ -62,10 +62,11 @@ public class AdminScheduleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("onCreate ", "AdminScheduleActivity");
         setContentView(R.layout.activity_admin_schedule);
         sPref = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sPref.edit();
-        editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
+       // editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
         editor.apply();
 
     }
@@ -154,10 +155,13 @@ public class AdminScheduleActivity extends AppCompatActivity {
                 lessons);*/
         adapter = new SimpleAdapter(this, data, R.layout.schedule_item_admin, from, to);
         adapter.setViewBinder(new MyViewBinder());
+        Log.e("SETTING ADAPTER", "BEFORE");
         lv.setAdapter(adapter);
+        registerForContextMenu(lv);
+      //  lv.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
         //Создадим контекстное меню для ListView
-        lv.setOnCreateContextMenuListener(this); //то же, что и registerForContextMenu(lv)
+        //lv.setOnCreateContextMenuListener(this); //то же, что и registerForContextMenu(lv)
 
 
 
