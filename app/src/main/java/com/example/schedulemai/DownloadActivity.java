@@ -7,11 +7,15 @@ package com.example.schedulemai;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 
+import com.example.schedulemai.admin.AdminScheduleActivity;
 import com.example.schedulemai.student.StudentScheduleActivity;
+import com.example.schedulemai.teacher.TeacherScheduleActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,7 +41,24 @@ public class DownloadActivity extends Activity {
         buttonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DownloadActivity.this, StudentScheduleActivity.class);
+                Intent intent = null;
+                String userType = PreferenceManager.
+                        getDefaultSharedPreferences(
+                                DownloadActivity.this).getString(SP.SP_USER_TYPE, "");
+                switch (userType) {
+                    case SP.STUDENT_TYPE:
+                        intent = new Intent(DownloadActivity.this, StudentScheduleActivity.class);
+                        break;
+                    case SP.ADMIN_TYPE:
+                        intent = new Intent(DownloadActivity.this, AdminScheduleActivity.class);
+                        break;
+                    case SP.TEACHER_TYPE:
+                        intent = new Intent(DownloadActivity.this, TeacherScheduleActivity.class);
+                        break;
+                    default:
+                        Log.e("DOWNLOAD_ACTIVITY", "unknown user type");
+                        break;
+                }
                 Locale locale = new Locale("ru", "RU");
                 SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", locale);
                 String dateSt = sdf.format(calView.getDate());

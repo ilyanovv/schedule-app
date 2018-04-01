@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ScheduleMAI.iml" filepath="$PROJECT_DIR$/ScheduleMAI.iml" />
+      <module fileurl="file://C:\Users\IO.Novikov\Documents\Android Studio Project\schedule-app\ScheduleMAI.iml" filepath="C:\Users\IO.Novikov\Documents\Android Studio Project\schedule-app\ScheduleMAI.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/schedule-app.iml" filepath="$PROJECT_DIR$/schedule-app.iml" />
     </modules>
   </component>
 </project>
