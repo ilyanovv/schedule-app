@@ -19,7 +19,7 @@
     <string name="stTeacherName">ФИО преподавателя</string>
     <string name="stNewLesson">Новое занятие</string>
     <string name="stLoadSchedule">Календарь</string>
-    <string name="title_activity_authentication">AuthenticationActivity</string>
+    <string name="title_activity_authentication">Schedule MAI</string>
     <string name="group_name">Номер группы:</string>
     <string name="stNext">Далее</string>
     <string name="user_type">Выберите тип пользователя:</string>

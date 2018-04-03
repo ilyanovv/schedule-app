@@ -39,12 +39,18 @@
             android:label="@string/title_activity_authentication">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".admin.AdminModifyLessonActivity" />
         <activity android:name=".admin.AdminScheduleActivity" />
+        <activity android:name=".admin.AdminNewLessonActivity" />
+
+        <activity android:name=".teacher.TeacherLessonDetailsActivity" />
+        <activity android:name=".teacher.TeacherModifyLessonActivity" />
+        <activity android:name=".teacher.TeacherNewLessonActivity" />
+        <activity android:name=".teacher.TeacherScheduleActivity" />
+
     </application>
 
 

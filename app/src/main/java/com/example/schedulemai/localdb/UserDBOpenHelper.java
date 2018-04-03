@@ -58,6 +58,7 @@ public class UserDBOpenHelper extends SQLiteOpenHelper {
      */
     private void createDatabase() {
         SQLiteDatabase db = getWritableDatabase();
+        // FIXME: походу это нигде не используется - рассмотреть на удаление
         db.execSQL("create table schedule80_308 ("
                     + "id integer primary key autoincrement,"
                     + "lesson_name string, "

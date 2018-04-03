@@ -56,7 +56,7 @@ public class DownloadActivity extends Activity {
                         intent = new Intent(DownloadActivity.this, TeacherScheduleActivity.class);
                         break;
                     default:
-                        Log.e("DOWNLOAD_ACTIVITY", "unknown user type");
+                        Log.e("DOWNLOAD_ACTIVITY", "unknown user lessonType");
                         break;
                 }
                 Locale locale = new Locale("ru", "RU");

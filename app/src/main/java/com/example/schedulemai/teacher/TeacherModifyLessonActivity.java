@@ -42,7 +42,7 @@ public class TeacherModifyLessonActivity extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         type.setAdapter(adapter);
-        //type.setSelection(0);
+        //lessonType.setSelection(0);
         setPreviousSelection();
 
         Button save = (Button) findViewById(R.id.save_button_t);

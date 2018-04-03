@@ -117,11 +117,11 @@ public class AdminScheduleActivity extends AppCompatActivity {
         int[] lessons_colors = new int[dc.size_db()];
         for (int i = 0; i < dc.size_db(); i++) {
             lesson = dc.get_from_db(i);
-            lessons_names[i] = lesson.name;
-            lessons_types[i] = lesson.type;
-            lessons_teachers[i] = lesson.teacher;
-            lessons_time[i] = lesson.begin_time + " - " + lesson.end_time;
-            lessons_rooms[i] = lesson.classroom;
+            lessons_names[i] = lesson.getName();
+            lessons_types[i] = lesson.getLessonType();
+            lessons_teachers[i] = lesson.getTeacher();
+            lessons_time[i] = lesson.getTimeBegin() + " - " + lesson.getTimeEnd();
+            lessons_rooms[i] = lesson.getClassroom();
             lessons_colors[i] = 0xaaff00;
         }
 
@@ -129,9 +129,8 @@ public class AdminScheduleActivity extends AppCompatActivity {
         // упаковываем данные в понятную для адаптера структуру
         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(
                 lessons_names.length);
-        Map<String, Object> m;
         for (int i = 0; i < lessons_names.length; i++) {
-            m = new HashMap<String, Object>();
+            Map<String, Object> m = new HashMap<>();
             m.put(ATTRIBUTE_LESSON_NAME, lessons_names[i]);
             m.put(ATTRIBUTE_LESSON_TYPE, lessons_types[i]);
             m.put(ATTRIBUTE_LESSON_TEACHER, lessons_teachers[i]);
@@ -297,11 +296,11 @@ public class AdminScheduleActivity extends AppCompatActivity {
                 return true;*/
             case R.id.delete_today_option:
                 selectedLesson = dc.get_from_db(position);
-                new DeleteLessonParseTask().execute(login, password, selectedLesson.record_id, "0");
+                new DeleteLessonParseTask().execute(login, password, selectedLesson.getRecordId(), "0");
                 return true;
             case R.id.delete_always_option:
                 selectedLesson = dc.get_from_db(position);
-                new DeleteLessonParseTask().execute(login, password, selectedLesson.record_id, "1");
+                new DeleteLessonParseTask().execute(login, password, selectedLesson.getRecordId(), "1");
                 return true;
             default: //can handle submenus if we save off acmi.position
                 this.mParentContextMenuListIndex = position;
@@ -314,14 +313,14 @@ public class AdminScheduleActivity extends AppCompatActivity {
 
 
     private void setLessonExtras(Intent intent, Lesson lesson){
-        intent.putExtra("lesson_name", lesson.name);
-        intent.putExtra("lesson_type", lesson.type);
-        intent.putExtra("lecture_room", lesson.classroom);
-        intent.putExtra("time_begin", lesson.begin_time);
-        intent.putExtra("time_end", lesson.end_time);
-        intent.putExtra("lesson_date", lesson.date);
-        intent.putExtra("teacher_fn", lesson.teacher);
-        intent.putExtra("record_id", lesson.record_id);
+        intent.putExtra("lesson_name", lesson.getName());
+        intent.putExtra("lesson_type", lesson.getLessonType());
+        intent.putExtra("lecture_room", lesson.getClassroom());
+        intent.putExtra("time_begin", lesson.getTimeBegin());
+        intent.putExtra("time_end", lesson.getTimeEnd());
+        intent.putExtra("lesson_date", lesson.getLessonDate());
+        intent.putExtra("teacher_fn", lesson.getTeacher());
+        intent.putExtra("record_id", lesson.getRecordId());
     }
 
 

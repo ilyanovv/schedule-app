@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.example.schedulemai.R;
 import com.example.schedulemai.lesson.Lesson;
+import com.example.schedulemai.lesson.LessonFactory;
 
 /**
  * Created by Илья on 13.02.2016.
@@ -44,7 +45,7 @@ public class StudentLessonDetailsActivity extends Activity {
                 Log.e("dcsize", Integer.toString(StudentScheduleActivity.dc.size_db()));
                 Intent intent = new Intent(StudentLessonDetailsActivity.this, StudentScheduleActivity.class);
                 intent.putExtra("key", "remove");
-                intent.putExtra("dateSt", oldLesson.date);
+                intent.putExtra("dateSt", oldLesson.getLessonDate());
                 StudentScheduleActivity.dc.remove_from_db(position, StudentLessonDetailsActivity.this);
                 startActivity(intent);
                 finish();
@@ -84,7 +85,7 @@ public class StudentLessonDetailsActivity extends Activity {
             StudentScheduleActivity.dc.modify_db(pos.pos, new_lesson(extras, oldLesson), StudentLessonDetailsActivity.this);
             Intent intent2 = new Intent(StudentLessonDetailsActivity.this, StudentScheduleActivity.class);
             intent2.putExtra("key", "update");
-            intent2.putExtra("dateSt", oldLesson.date);
+            intent2.putExtra("dateSt", oldLesson.getLessonDate());
             startActivity(intent2);
             finish();
         }
@@ -95,22 +96,23 @@ public class StudentLessonDetailsActivity extends Activity {
         String name = (String) savedInstanceState.get("lesson_name");
         String teacher = (String) savedInstanceState.get("teacher_fn");
         String type = (String) savedInstanceState.get("lesson_type");
-        String begin_time = savedInstanceState.getString("time_begin");
-        String end_time = savedInstanceState.getString("time_end");
-        String date = oldLesson.date;
+        String timeBegin = savedInstanceState.getString("time_begin");
+        String timeEnd = savedInstanceState.getString("time_end");
+        String date = oldLesson.getLessonDate();
         String classroom = savedInstanceState.getString("lecture_room");
         String groups = null;
-        return Lesson.CreateNewLesson(type, name, teacher, begin_time, end_time, classroom, date, groups, null);
+        return LessonFactory.createLesson(null, name, teacher, type, timeBegin, timeEnd,
+                classroom, date, groups);
     }
 
     private void setLessonExtras(Intent intent, Lesson lesson){
-        intent.putExtra("lesson_name", lesson.name);
-        intent.putExtra("lesson_type", lesson.type);
-        intent.putExtra("lecture_room", lesson.classroom);
-        intent.putExtra("time_begin", lesson.begin_time);
-        intent.putExtra("time_end", lesson.end_time);
-        intent.putExtra("lesson_date", lesson.date);
-        intent.putExtra("teacher_fn", lesson.teacher);
-        intent.putExtra("record_id", lesson.record_id);
+        intent.putExtra("lesson_name", lesson.getName());
+        intent.putExtra("lesson_type", lesson.getLessonType());
+        intent.putExtra("lecture_room", lesson.getClassroom());
+        intent.putExtra("time_begin", lesson.getTimeBegin());
+        intent.putExtra("time_end", lesson.getTimeEnd());
+        intent.putExtra("lesson_date", lesson.getLessonDate());
+        intent.putExtra("teacher_fn", lesson.getTeacher());
+        intent.putExtra("record_id", lesson.getRecordId());
     }
 }

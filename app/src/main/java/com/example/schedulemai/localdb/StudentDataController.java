@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.schedulemai.lesson.Lesson;
 import com.example.schedulemai.SP;
+import com.example.schedulemai.lesson.LessonFactory;
 import com.example.schedulemai.student.StudentScheduleActivity;
 import com.example.schedulemai.clouddb.CloudDBOpenHelper;
 import com.example.schedulemai.clouddb.StudentCloudDBOpenHelper;
@@ -51,14 +52,14 @@ public class StudentDataController extends DataController{
     {
         SQLiteDatabase database = GetOpenedCloudDatabase(cont, "");
         ContentValues cv = new ContentValues();
-        cv.put("lesson_name", les.name);
-        cv.put("lesson_type", les.type);
-        cv.put("lecture_room", les.classroom);
-        cv.put("time_begin", les.begin_time);
-        cv.put("time_end", les.end_time);
-        cv.put("lesson_date", les.date);
-        cv.put("teacher_fn", les.teacher);
-        cv.put("record_id", les.record_id);
+        cv.put("lesson_name", les.getName());
+        cv.put("lesson_type", les.getLessonType());
+        cv.put("lecture_room", les.getClassroom());
+        cv.put("time_begin", les.getTimeBegin());
+        cv.put("time_end", les.getTimeEnd());
+        cv.put("lesson_date", les.getLessonDate());
+        cv.put("teacher_fn", les.getTeacher());
+        cv.put("record_id", les.getRecordId());
         database.insert("schedule_tab", null, cv);
     }
 
@@ -66,7 +67,12 @@ public class StudentDataController extends DataController{
         Lesson oldLesson = get_from_db(i);
         SQLiteDatabase database = GetOpenedCloudDatabase(cont, "");
         String whereClause = "lesson_name = ? AND lesson_type = ? AND time_begin = ? AND lesson_date = ?";
-        String[] whereArgs = new String[] {oldLesson.name, oldLesson.type, oldLesson.begin_time, oldLesson.date};
+        String[] whereArgs = new String[] {
+                oldLesson.getName(),
+                oldLesson.getLessonType(),
+                oldLesson.getTimeBegin(),
+                oldLesson.getLessonDate()
+        };
         int del = database.delete("schedule_tab", whereClause, whereArgs);
         Log.e("DEL_ROWS  = ", Integer.toString(del));
         local_db.remove(i);
@@ -77,16 +83,21 @@ public class StudentDataController extends DataController{
         SQLiteDatabase database = GetOpenedCloudDatabase(cont, "");
 
         ContentValues cv = new ContentValues();
-        cv.put("lesson_name", les.name);
-        cv.put("lesson_type", les.type);
-        cv.put("lecture_room", les.classroom);
-        cv.put("time_begin", les.begin_time);
-        cv.put("time_end", les.end_time);
-        cv.put("lesson_date", les.date);
-        cv.put("teacher_fn", les.teacher);
-        cv.put("record_id", les.record_id);
+        cv.put("lesson_name", les.getName());
+        cv.put("lesson_type", les.getLessonType());
+        cv.put("lecture_room", les.getClassroom());
+        cv.put("time_begin", les.getTimeBegin());
+        cv.put("time_end", les.getTimeEnd());
+        cv.put("lesson_date", les.getLessonDate());
+        cv.put("teacher_fn", les.getTeacher());
+        cv.put("record_id", les.getRecordId());
         String whereClause = "lesson_name = ? AND lesson_type = ? AND time_begin = ? AND lesson_date = ?";
-        String[] whereArgs = new String[] {oldLesson.name, oldLesson.type, oldLesson.begin_time, oldLesson.date};
+        String[] whereArgs = new String[] {
+                oldLesson.getName(),
+                oldLesson.getLessonType(),
+                oldLesson.getTimeBegin(),
+                oldLesson.getLessonDate()
+        };
 
         int upd = database.update("schedule_tab", cv, whereClause, whereArgs);
         Log.e("UPD_ROWS  = ", Integer.toString(upd));
@@ -116,16 +127,17 @@ public class StudentDataController extends DataController{
         GetValues(count, values, 0, c);
 
         for (int i = 0; i < count; i++) {
-            String lesson_type = values[i][1];
-            String lesson_name = values[i][0];
-            String teacher_fn = values[i][6];
+            String lessonType = values[i][1];
+            String lessonName = values[i][0];
+            String teacherFn = values[i][6];
             String classroom = values[i][2];
-            String begin_time = values[i][3];
-            String end_time = values[i][4];
+            String timeBegin = values[i][3];
+            String timeEnd = values[i][4];
             String dateSt = values[i][5];
             String recordID = values[i][7];
-            Lesson lesson = Lesson.CreateNewLesson(lesson_type, lesson_name, teacher_fn,
-                    begin_time, end_time, classroom, dateSt, null, recordID);
+            Lesson lesson = LessonFactory.createLesson(recordID, lessonName,
+                    teacherFn, lessonType, timeBegin, timeEnd,
+                    classroom, dateSt, null);
             StudentScheduleActivity.dc.add_to_db(lesson);
         }
         c.close();

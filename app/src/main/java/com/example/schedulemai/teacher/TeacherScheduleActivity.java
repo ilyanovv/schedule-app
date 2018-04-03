@@ -105,11 +105,11 @@ public class TeacherScheduleActivity extends AppCompatActivity {
         int[] lessons_colors = new int[dc.size_db()];
         for (int i = 0; i < dc.size_db(); i++) {
             lesson = dc.get_from_db(i);
-            lessons_names[i] = lesson.name;
-            lessons_types[i] = lesson.type;
-            lessons_groups[i] = lesson.group_number;
-            lessons_time[i] = lesson.begin_time + " - " + lesson.end_time;
-            lessons_rooms[i] = lesson.classroom;
+            lessons_names[i] = lesson.getName();
+            lessons_types[i] = lesson.getLessonType();
+            lessons_groups[i] = lesson.getGroupNumber();
+            lessons_time[i] = lesson.getTimeBegin() + " - " + lesson.getTimeEnd();
+            lessons_rooms[i] = lesson.getClassroom();
             lessons_colors[i] = 0xaaff00;
         }
 

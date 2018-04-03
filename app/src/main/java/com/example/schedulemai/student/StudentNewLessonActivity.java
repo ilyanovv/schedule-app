@@ -16,6 +16,7 @@ import android.widget.Spinner;
 
 import com.example.schedulemai.R;
 import com.example.schedulemai.lesson.Lesson;
+import com.example.schedulemai.lesson.LessonFactory;
 
 //TODO: РЕАЛИЗОВАТЬ ДОБАВЛЕНИЕ ЗАНЯТИЯ В ЛОКАЛЬНУЮ БАЗУ ДАННЫХ
 //TODO: Обработать получаемые из базы значения: они могут быть равны null
@@ -66,10 +67,11 @@ public class StudentNewLessonActivity extends Activity {
                 String classroomStr = lesson_room.getText().toString();
                 String teacherStr = teacher.getText().toString();
                 String groupsStr = null;
-                Lesson newLesson = Lesson.CreateNewLesson(typeStr, nameStr, teacherStr, beginTimeStr, endTimeStr,
-                        classroomStr, dateStr, groupsStr, null);
+                Lesson newLesson =  LessonFactory.createLesson(null, nameStr,
+                        teacherStr, typeStr, beginTimeStr, endTimeStr,
+                        classroomStr, dateStr, groupsStr);
                 StudentScheduleActivity.dc.insert_into_db(newLesson, StudentNewLessonActivity.this);
-                intent.putExtra("dateSt", newLesson.date);
+                intent.putExtra("dateSt", newLesson.getLessonDate());
                 startActivity(intent);
                 finish();
             }
