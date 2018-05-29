@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.example.schedulemai.asynctasks.DbTaskFactory;
 import com.example.schedulemai.lesson.Lesson;
 import com.example.schedulemai.SP;
 import com.example.schedulemai.lesson.LessonFactory;
@@ -18,7 +19,7 @@ public class StudentDataController extends DataController{
     public StudentDataController(){
         super();
     }
-     public SQLiteDatabase GetOpenedCloudDatabase(Context cont, String daySt) {
+     public SQLiteDatabase getOpenedCloudDatabase(Context cont, String daySt) {
         if(database == null || !database.isOpen())
         {
             final String DB_NAME = "schedule3.sqlite3";
@@ -32,6 +33,11 @@ public class StudentDataController extends DataController{
              final String DB_NAME = "schedule3.sqlite3";
              CloudDBOpenHelper dbOpenHelper = new StudentCloudDBOpenHelper(cont, DB_NAME, daySt);
              database = dbOpenHelper.getReadableDatabase();
+
+             DbTaskFactory dbTaskFactory = new DbTaskFactory(database);
+             dbTaskFactory.createTable(Tables.TEACHER);
+
+
          }
         Log.e("PATH = ", database.getPath());
         return database;
@@ -50,7 +56,7 @@ public class StudentDataController extends DataController{
 
     public void insert_into_db(Lesson les, Context cont)
     {
-        SQLiteDatabase database = GetOpenedCloudDatabase(cont, "");
+        SQLiteDatabase database = getOpenedCloudDatabase(cont, "");
         ContentValues cv = new ContentValues();
         cv.put("lesson_name", les.getName());
         cv.put("lesson_type", les.getLessonType());
@@ -65,7 +71,7 @@ public class StudentDataController extends DataController{
 
     public void remove_from_db(int i, Context cont){
         Lesson oldLesson = get_from_db(i);
-        SQLiteDatabase database = GetOpenedCloudDatabase(cont, "");
+        SQLiteDatabase database = getOpenedCloudDatabase(cont, "");
         String whereClause = "lesson_name = ? AND lesson_type = ? AND time_begin = ? AND lesson_date = ?";
         String[] whereArgs = new String[] {
                 oldLesson.getName(),
@@ -80,7 +86,7 @@ public class StudentDataController extends DataController{
 
     public void modify_db(int i, Lesson les, Context cont){
         Lesson oldLesson = get_from_db(i);
-        SQLiteDatabase database = GetOpenedCloudDatabase(cont, "");
+        SQLiteDatabase database = getOpenedCloudDatabase(cont, "");
 
         ContentValues cv = new ContentValues();
         cv.put("lesson_name", les.getName());
@@ -106,7 +112,7 @@ public class StudentDataController extends DataController{
     }
 
     public void update_db(String date, Context cont) {
-        SQLiteDatabase database = GetOpenedCloudDatabase(cont, date);
+        SQLiteDatabase database = getOpenedCloudDatabase(cont, date);
         while(StudentScheduleActivity.dc.size_db()>0)
             local_db.remove(0);
         Log.e("DATE in UPD", date);

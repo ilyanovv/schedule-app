@@ -32,7 +32,7 @@ abstract public class DataController {
         return local_db.size();
     }
 
-    abstract public SQLiteDatabase GetOpenedCloudDatabase(Context cont, String daySt);
+    abstract public SQLiteDatabase getOpenedCloudDatabase(Context cont, String daySt);
     abstract public SQLiteDatabase GetOpenedUserDatabase(Context cont);
     abstract public void insert_into_db(Lesson les, Context cont);
     abstract public void remove_from_db(int i, Context cont);

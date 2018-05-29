@@ -18,7 +18,7 @@ public class TeacherDataController extends DataController{
     public TeacherDataController(){
         super();
     }
-    public SQLiteDatabase GetOpenedCloudDatabase(Context cont, String daySt) {
+    public SQLiteDatabase getOpenedCloudDatabase(Context cont, String daySt) {
         if(database == null || !database.isOpen())
         {
             final String DB_NAME = "schedule3.sqlite3";
@@ -50,7 +50,7 @@ public class TeacherDataController extends DataController{
 
     public void insert_into_db(Lesson les, Context cont)
     {
-        SQLiteDatabase database = GetOpenedCloudDatabase(cont, "");
+        SQLiteDatabase database = getOpenedCloudDatabase(cont, "");
         ContentValues cv = new ContentValues();
         cv.put("lesson_name", les.getName());
         cv.put("lesson_type", les.getLessonType());
@@ -65,7 +65,7 @@ public class TeacherDataController extends DataController{
 
     public void remove_from_db(int i, Context cont){
         Lesson oldLesson = get_from_db(i);
-        SQLiteDatabase database = GetOpenedCloudDatabase(cont, "");
+        SQLiteDatabase database = getOpenedCloudDatabase(cont, "");
         String whereClause = "lesson_name = ? AND lesson_type = ? AND time_begin = ? AND lesson_date = ?";
         String[] whereArgs = new String[] {
                 oldLesson.getName(),
@@ -80,7 +80,7 @@ public class TeacherDataController extends DataController{
 
     public void modify_db(int i, Lesson les, Context cont){
         Lesson oldLesson = get_from_db(i);
-        SQLiteDatabase database = GetOpenedCloudDatabase(cont, "");
+        SQLiteDatabase database = getOpenedCloudDatabase(cont, "");
 
         ContentValues cv = new ContentValues();
         cv.put("lesson_name", les.getName());
@@ -106,7 +106,7 @@ public class TeacherDataController extends DataController{
     }
 
     public void update_db(String date, Context cont) {
-        SQLiteDatabase database = GetOpenedCloudDatabase(cont, date);
+        SQLiteDatabase database = getOpenedCloudDatabase(cont, date);
         while(TeacherScheduleActivity.dc.size_db()>0)
             local_db.remove(0);
         Log.e("DATE in UPD", date);
