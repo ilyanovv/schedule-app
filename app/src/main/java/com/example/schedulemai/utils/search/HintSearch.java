@@ -3,6 +3,7 @@ package com.example.schedulemai.utils.search;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -94,6 +95,16 @@ public class HintSearch {
     }
 
     public int getClickedPosition() {
-        return clickedPosition;
+        //return clickedPosition;
+        int result = 0;
+        String text = editText.getText().toString();
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).equals(text)) {
+                result = i;
+                break;
+            }
+        }
+        Log.e("RESULT", String.valueOf(result));
+        return result;
     }
 }

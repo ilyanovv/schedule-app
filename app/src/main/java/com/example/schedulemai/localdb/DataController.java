@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.schedulemai.DownloadActivity;
+import com.example.schedulemai.asynctasks.DbTaskFactory;
 import com.example.schedulemai.lesson.Lesson;
 
 
@@ -15,6 +17,7 @@ import com.example.schedulemai.lesson.Lesson;
 //TODO: посмотреть AdminScheduleActivity
 abstract public class DataController {
     protected LocalDb local_db;
+    //TODO: сделать private
     public SQLiteDatabase database;
     protected SQLiteDatabase archiveDatabase;
 
@@ -39,8 +42,12 @@ abstract public class DataController {
     abstract public void modify_db(int i, Lesson les, Context cont);
     abstract public void update_db(String date, Context cont);
 
+    public Dao getDao() {
+        return new Dao(database);
+    }
+
     //TODO: заменить на функцию без логов
-    int logCursor(Cursor c) {
+    protected int logCursor(Cursor c) {
         int count = 0;
 
         if (c != null) {
@@ -76,6 +83,15 @@ abstract public class DataController {
                 i++;
             } while (c.moveToNext());
         }
+    }
+
+
+    protected void createTables() {
+        DbTaskFactory dbTaskFactory = new DbTaskFactory(database, getDao());
+        dbTaskFactory.createTable(Tables.TEACHER);
+        dbTaskFactory.createTable(Tables.GROUP);
+        dbTaskFactory.createTable(Tables.LESSON);
+        dbTaskFactory.createTable(Tables.LESSON_TYPE);
     }
 }
 

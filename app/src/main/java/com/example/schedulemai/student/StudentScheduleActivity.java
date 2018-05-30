@@ -66,7 +66,6 @@ public class StudentScheduleActivity extends AppCompatActivity {
         super.onResume();
         dateSt = null;
 
-
         Bundle extras = getIntent().getExtras();
         Date curDate;
         if(extras == null)

@@ -6,7 +6,10 @@ package com.example.schedulemai.localdb;
 
 public enum Tables {
     TEACHER("teacher", "teachers"),
-    SCHEDULE("schedule", "url");
+    GROUP("group_tab", "get_all_groups"),
+    LESSON("lesson", "lessons"),
+    LESSON_TYPE("lesson_type", "lesson_types");
+
 
     private final String tableName;
     private final String url;

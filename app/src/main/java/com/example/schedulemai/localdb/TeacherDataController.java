@@ -32,6 +32,7 @@ public class TeacherDataController extends DataController{
             final String DB_NAME = "schedule3.sqlite3";
             CloudDBOpenHelper dbOpenHelper = new TeacherCloudDBOpenHelper(cont, DB_NAME, daySt);
             database = dbOpenHelper.getReadableDatabase();
+            createTables();
         }
         Log.e("PATH = ", database.getPath());
         return database;

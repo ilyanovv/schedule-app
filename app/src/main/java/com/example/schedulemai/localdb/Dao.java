@@ -1,5 +1,6 @@
 package com.example.schedulemai.localdb;
 
+import android.app.ActionBar;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -9,8 +10,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IO.Novikov on 29.05.2018.
@@ -38,16 +41,36 @@ public class Dao {
     }
 
 
-    public List<String> getTeachersList() {
-        List<String> result = new ArrayList<>();
-        String query = "SELECT last_name, first_name, patronymic_name FROM "
+    public List<Map<String, String>> getTeachers() {
+        List<Map<String, String>> result = new ArrayList<>();
+        String query = "SELECT last_name, first_name, patronymic_name, teacher_id FROM "
                 + Tables.TEACHER.getTableName();
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
-            result.add(cursor.getString(0) + " " +
+            Map<String, String> value = new HashMap<>();
+            value.put("teacher_name", cursor.getString(0) + " " +
                 cursor.getString(1) + " " +
                 cursor.getString(2)
             );
+            value.put("teacher_id", cursor.getString(3));
+            result.add(value);
+        }
+        cursor.close();
+        return result;
+    }
+
+    public List<Map<String, String>> getValues(Tables table) {
+        List<Map<String, String>> result = new ArrayList<>();
+        String query = "SELECT * FROM "
+                + table.getTableName();
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            Map<String, String> value = new HashMap<>();
+            for (String columnName : cursor.getColumnNames()) {
+                int index = cursor.getColumnIndex(columnName);
+                value.put(columnName, cursor.getString(index));
+            }
+            result.add(value);
         }
         cursor.close();
         return result;
@@ -56,7 +79,7 @@ public class Dao {
 
 
     private void dropIfExists(Tables tableName) {
-        String query =  "DROP TABLE IF EXISTS " + tableName.name();
+        String query =  "DROP TABLE IF EXISTS " + tableName.getTableName();
         Log.e("SQLite", query);
         db.execSQL(query);
     }

@@ -32,6 +32,11 @@ public class DbTaskFactory {
         this.dao = new Dao(db);
     }
 
+    public DbTaskFactory(SQLiteDatabase db, Dao dao) {
+        this.db = db;
+        this.dao = dao;
+    }
+
     public void createTable(Tables tableName)  {
         new DbTask().execute(tableName);
     }
