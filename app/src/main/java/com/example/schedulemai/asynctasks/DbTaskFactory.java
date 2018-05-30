@@ -82,10 +82,7 @@ public class DbTaskFactory {
             super.onPostExecute(jsonArray);
             if (jsonArray != null) {
                 Log.e("JSON", jsonArray.toString());
-                Dao dao = new Dao(db);
                 dao.createTableAndInsertValues(table, jsonArray);
-                //FIXME: удалить (для отладки)
-                Log.e(LOG_TAG, dao.getTeachersList().toString());
             } else {
                 onCancelled();
             }

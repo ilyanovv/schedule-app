@@ -31,12 +31,22 @@
         android:layout_below="@id/spinnerUserType"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-    <Spinner
-        android:id="@+id/spinnerGroupNumber"
+    <EditText
+        android:id="@+id/groupEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvGroupNumber">
-    </Spinner>
+        android:layout_below="@id/tvGroupNumber"
+        android:hint="Search"
+        />
+
+    <ListView
+        android:id="@+id/groupListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/groupEditText"
+        android:visibility="gone"
+        >
+    </ListView>
 
     <TextView
         android:id="@+id/tvTeacherName"
@@ -44,16 +54,27 @@
         android:layout_height="wrap_content"
         android:text="@string/teacher_name"
         android:layout_below="@id/spinnerUserType"
-        android:visibility="gone"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-    <Spinner
-        android:id="@+id/spinnerTeacherName"
+
+
+    <EditText
+        android:id="@+id/teacherEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tvTeacherName"
         android:visibility="gone"
-        android:layout_below="@id/tvTeacherName">
-    </Spinner>
+        android:hint="Search"
+        />
+
+    <ListView
+        android:id="@+id/teacherListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/teacherEditText"
+        android:visibility="gone"
+        >
+    </ListView>
 
 
     <TextView
@@ -61,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/loginSt"
-        android:layout_below="@id/spinnerGroupNumber"
+        android:layout_below="@id/groupListView"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText

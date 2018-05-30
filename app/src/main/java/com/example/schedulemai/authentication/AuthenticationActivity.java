@@ -1,5 +1,6 @@
 package com.example.schedulemai.authentication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -9,10 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +25,7 @@ import com.example.schedulemai.SP;
 import com.example.schedulemai.student.StudentScheduleActivity;
 import com.example.schedulemai.teacher.TeacherScheduleActivity;
 import com.example.schedulemai.admin.AdminScheduleActivity;
+import com.example.schedulemai.utils.search.HintSearch;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +38,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 //TODO: сделать кнопку "обновить": onStop() и onRestart() - когда доступа к интернету нет
 //TODO: версию расписания для группы получить в этом же json-е
@@ -44,8 +50,6 @@ public class AuthenticationActivity extends AppCompatActivity {
     private String[] teacherIDData;
     private int[] teacherVersionData;
     private String[] users = {"Студент", "Преподаватель", "Администратор"};
-    ArrayAdapter<String> groupNumberAdapter;
-    ArrayAdapter<String> teacherNameAdapter;
     Button gnButton;
     Button refreshButton;
     EditText etLogin;
@@ -54,6 +58,11 @@ public class AuthenticationActivity extends AppCompatActivity {
     Intent prevIntent;
     SharedPreferences sPref;
     SharedPreferences.Editor editor;
+    HintSearch teacherSearch;
+    HintSearch groupSearch;
+    EditText teacherEditText;
+    EditText groupEditText;
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +73,10 @@ public class AuthenticationActivity extends AppCompatActivity {
         editor = sPref.edit();
 
         String userType = sPref.getString(SP.SP_USER_TYPE, "NO_TYPE");
-        /*String groupID = sPref.getString(SP.SP_GROUP_ID, null);
-        String teacherID = sPref.getString(SP.SP_TEACHER_ID, null);
-        try {
-            Log.e("groupID", groupID);
-        }catch (Exception e){;};
-        try {
-            Log.e("teacherID", teacherID);
-        }catch (Exception e){;};*/
+        teacherEditText = findViewById(R.id.teacherEditText);
+        groupEditText = findViewById(R.id.groupEditText);
+
+
         //если уже был сделан выбор ранее
         if(userType.equals(SP.STUDENT_TYPE)) {
             prevIntent = new Intent(AuthenticationActivity.this, StudentScheduleActivity.class);
@@ -90,10 +95,6 @@ public class AuthenticationActivity extends AppCompatActivity {
             userTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             userTypeSpinner.setAdapter(userTypeAdapter);
             userTypeSpinner.setSelection(0);
-            final Spinner spTeacherName = (Spinner) findViewById(R.id.spinnerTeacherName);
-            final Spinner spGroupNumber = (Spinner) findViewById(R.id.spinnerGroupNumber);
-            spTeacherName.setSelection(0);
-            spGroupNumber.setSelection(0);
             etLogin = (EditText) findViewById(R.id.editTextLogin);
             etPassword = (EditText) findViewById(R.id.editTextPassword);
             etLogin.setText(sPref.getString(SP.SP_LOGIN, ""));
@@ -110,8 +111,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                         case "Студент":
                             tvTeacherName.setVisibility(View.GONE);
                             tvGroupNumber.setVisibility(View.VISIBLE);
-                            spTeacherName.setVisibility(View.GONE);
-                            spGroupNumber.setVisibility(View.VISIBLE);
+                            teacherEditText.setVisibility(View.GONE);
+                            groupEditText.setVisibility(View.VISIBLE);
                             tvLogin.setVisibility(View.GONE);
                             tvPassword.setVisibility(View.GONE);
                             etLogin.setVisibility(View.GONE);
@@ -120,8 +121,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                         case "Преподаватель":
                             tvTeacherName.setVisibility(View.VISIBLE);
                             tvGroupNumber.setVisibility(View.GONE);
-                            spTeacherName.setVisibility(View.VISIBLE);
-                            spGroupNumber.setVisibility(View.GONE);
+                            teacherEditText.setVisibility(View.VISIBLE);
+                            groupEditText.setVisibility(View.GONE);
                             tvLogin.setVisibility(View.GONE);
                             tvPassword.setVisibility(View.GONE);
                             etLogin.setVisibility(View.GONE);
@@ -130,8 +131,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                         case "Администратор":
                             tvTeacherName.setVisibility(View.GONE);
                             tvGroupNumber.setVisibility(View.VISIBLE);
-                            spTeacherName.setVisibility(View.GONE);
-                            spGroupNumber.setVisibility(View.VISIBLE);
+                            teacherEditText.setVisibility(View.GONE);
+                            groupEditText.setVisibility(View.VISIBLE);
                             tvLogin.setVisibility(View.VISIBLE);
                             tvPassword.setVisibility(View.VISIBLE);
                             etLogin.setVisibility(View.VISIBLE);
@@ -154,25 +155,24 @@ public class AuthenticationActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     int position = userTypeSpinner.getSelectedItemPosition();
                     Intent intent = null;
+                    EditText teacherEditText = findViewById(R.id.teacherEditText);
+
                     switch (users[position]) {
                         case "Студент":
-                            Spinner type = (Spinner) findViewById(R.id.spinnerGroupNumber);
-                            editor.putString(SP.SP_GROUP_ID, groupIDData[type.getSelectedItemPosition()]);
-                            editor.putInt(SP.SP_GLOBAL_DB_VERSION, groupVersionData[type.getSelectedItemPosition()]);
+                            editor.putString(SP.SP_GROUP_ID, groupIDData[groupSearch.getClickedPosition()]);
+                            editor.putInt(SP.SP_GLOBAL_DB_VERSION, groupVersionData[groupSearch.getClickedPosition()]);
                             editor.putString(SP.SP_USER_TYPE, SP.STUDENT_TYPE);
                             intent = new Intent(AuthenticationActivity.this, StudentScheduleActivity.class);
                             break;
                         case "Преподаватель":
-                            type = (Spinner) findViewById(R.id.spinnerTeacherName);
-                            editor.putString(SP.SP_TEACHER_ID, teacherIDData[type.getSelectedItemPosition()]);
-                            editor.putInt(SP.SP_GLOBAL_DB_VERSION, teacherVersionData[type.getSelectedItemPosition()]);
+                            editor.putString(SP.SP_TEACHER_ID, teacherIDData[teacherSearch.getClickedPosition()]);
+                            editor.putInt(SP.SP_GLOBAL_DB_VERSION, teacherVersionData[teacherSearch.getClickedPosition()]);
                             editor.putString(SP.SP_USER_TYPE, SP.TEACHER_TYPE);
                             intent = new Intent(AuthenticationActivity.this, TeacherScheduleActivity.class);
                             break;
                         case "Администратор":
-                            type = (Spinner) findViewById(R.id.spinnerGroupNumber);
-                            editor.putString(SP.SP_GROUP_ID, groupIDData[type.getSelectedItemPosition()]);
-                            editor.putInt(SP.SP_GLOBAL_DB_VERSION, groupVersionData[type.getSelectedItemPosition()]);
+                            editor.putString(SP.SP_GROUP_ID, groupIDData[groupSearch.getClickedPosition()]);
+                            editor.putInt(SP.SP_GLOBAL_DB_VERSION, groupVersionData[groupSearch.getClickedPosition()]);
                             //editor.putString(SP.SP_USER_TYPE, SP.ADMIN_TYPE);
                             //intent = new Intent(AuthenticationActivity.this, StudentScheduleActivity.class);
                             new TestConnectionParseTask().execute(etLogin.getText().toString(),
@@ -248,24 +248,22 @@ public class AuthenticationActivity extends AppCompatActivity {
                 Log.e("JSON", jsonArray.toString());
                 gnButton.setEnabled(true);
                 int jsonArrayLength = jsonArray.length();
-                String[] data = new String[jsonArrayLength];
+                ArrayList<String> data = new ArrayList<>();
                 groupIDData = new String[jsonArrayLength];
                 groupVersionData = new int[jsonArrayLength];
                 for (int i = 0; i < jsonArrayLength; i++) {
                     try {
-                        data[i] = jsonArray.getJSONObject(i).getString("group_number");
+                        data.add(jsonArray.getJSONObject(i).getString("group_number"));
                         groupIDData[i] = jsonArray.getJSONObject(i).getString("group_id");
                         groupVersionData[i] = jsonArray.getJSONObject(i).getInt("version");
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
                 }
-                groupNumberAdapter = new ArrayAdapter<String>(AuthenticationActivity.this,
-                        android.R.layout.simple_spinner_item, data);
-                groupNumberAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                Spinner type = (Spinner) findViewById(R.id.spinnerGroupNumber);
-                type.setAdapter(groupNumberAdapter);
-                type.setSelection(0);
+                ListView groupListView = findViewById(R.id.groupListView);
+                groupSearch = new HintSearch(groupEditText, groupListView, context, data);
+                groupSearch.setUp();
+
                 refreshButton.setEnabled(false);
                 refreshButton.setVisibility(View.GONE);
                 gnButton.setEnabled(true);
@@ -336,26 +334,24 @@ public class AuthenticationActivity extends AppCompatActivity {
                 Log.e("JSON", jsonArray.toString());
                 gnButton.setEnabled(true);
                 int jsonArrayLength = jsonArray.length();
-                String[] data = new String[jsonArrayLength];
+                List<String> data = new ArrayList<>();
                 teacherIDData = new String[jsonArrayLength];
                 teacherVersionData = new int[jsonArrayLength];
                 for (int i = 0; i < jsonArrayLength; i++) {
                     try {
-                        data[i] = jsonArray.getJSONObject(i).getString("last_name") + " " +
+                        data.add(jsonArray.getJSONObject(i).getString("last_name") + " " +
                                 jsonArray.getJSONObject(i).getString("first_name") +  " " +
-                                jsonArray.getJSONObject(i).getString("patronymic_name");
+                                jsonArray.getJSONObject(i).getString("patronymic_name"));
                         teacherIDData[i] = jsonArray.getJSONObject(i).getString("teacher_id");
                         teacherVersionData[i] = jsonArray.getJSONObject(i).getInt("version");
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
                 }
-                teacherNameAdapter = new ArrayAdapter<String>(AuthenticationActivity.this,
-                        android.R.layout.simple_spinner_item, data);
-                teacherNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                Spinner type = (Spinner) findViewById(R.id.spinnerTeacherName);
-                type.setAdapter(teacherNameAdapter);
-                type.setSelection(0);
+
+                ListView teacherListView = findViewById(R.id.teacherListView);
+                teacherSearch = new HintSearch(teacherEditText, teacherListView, context, data);
+                teacherSearch.setUp();
                 refreshButton.setEnabled(false);
                 refreshButton.setVisibility(View.GONE);
                 gnButton.setEnabled(true);

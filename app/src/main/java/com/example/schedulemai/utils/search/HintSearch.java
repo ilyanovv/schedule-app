@@ -10,27 +10,37 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 
+import com.example.schedulemai.R;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IO.Novikov on 03.04.2018.
  */
 
 public class HintSearch {
-    String[] items;
+    ArrayList<String> items;
     ArrayList<String> listItems;
     ArrayAdapter<String> adapter;
     ListView listView;
     EditText editText;
     Context context;
-    public HintSearch(EditText editText, ListView listView, Context context) {
+    int clickedPosition = 0;
+
+    public HintSearch(EditText editText, ListView listView, Context context, List<String> data) {
         this.listView = listView;
         this.editText = editText;
         this.context = context;
+        listItems = new ArrayList<>(data);
+        items = new ArrayList<>(data);
+        adapter=new ArrayAdapter<>(context, R.layout.list_item, R.id.txtitem, listItems);
+        listView.setAdapter(adapter);
     }
 
 
     public void setUp() {
+        editText.setFocusable(true);
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -67,29 +77,11 @@ public class HintSearch {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 editText.setText(listItems.get(position));
                 listView.setVisibility(View.GONE);
+                clickedPosition = position;
             }
         });
-    }
 
-//    public void initList(){
-//        //items=new String[]{"Java","JavaScript","C#","PHP", "С++", "Python", "C", "SQL", "Ruby", "Objective-C"};
-//        items = new String[10000];
-//        for (int i = 0; i < 1000; i++)  {
-//            items[i* 10 + 0] = "Java" + i;
-//            items[i* 10 + 1] = "JavaScript " + i;
-//            items[i* 10 + 2] = "C#";
-//            items[i* 10 + 3] = "PHP";
-//            items[i* 10 + 4] = "С++";
-//            items[i* 10 + 5] = "Python";
-//            items[i* 10 + 6] = "C";
-//            items[i* 10 + 7] = "SQL";
-//            items[i* 10 + 8] = "Ruby";
-//            items[i* 10 + 9] = "Objective-C";
-//        }
-//        listItems = new ArrayList<>();
-//        adapter=new ArrayAdapter<String>(context, R.layout.list_item, R.id.txtitem, listItems);
-//        listView.setAdapter(adapter);
-//    }
+    }
 
     public void searchItem(String textToSearch){
         listItems.clear();
@@ -99,5 +91,9 @@ public class HintSearch {
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    public int getClickedPosition() {
+        return clickedPosition;
     }
 }
