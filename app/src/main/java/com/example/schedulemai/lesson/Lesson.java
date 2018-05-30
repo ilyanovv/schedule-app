@@ -41,7 +41,7 @@ abstract public class Lesson {
     public static int getBackgroundStyle(String lessonType) {
         switch (lessonType){
             case "ЛК":
-                return R.drawable.lab_back;
+                return R.drawable.lab_back_selector;
             case "ПЗ":
                 return R.drawable.sem_back;
             case "ЛР":

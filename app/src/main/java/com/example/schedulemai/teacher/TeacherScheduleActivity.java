@@ -58,6 +58,7 @@ public class TeacherScheduleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_schedule);
+        setTitle();
     }
 
     @Override
@@ -280,6 +281,12 @@ public class TeacherScheduleActivity extends AppCompatActivity {
                     "Не удалось подключиться к серверу", Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    private void setTitle() {
+        String groupName = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(SP.SP_TEACHER, "");
+        this.setTitle(groupName);
     }
 
 }

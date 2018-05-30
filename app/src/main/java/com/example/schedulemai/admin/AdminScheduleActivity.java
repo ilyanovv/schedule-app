@@ -68,7 +68,7 @@ public class AdminScheduleActivity extends AppCompatActivity {
         editor = sPref.edit();
        // editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
         editor.apply();
-
+        setTitle();
     }
 
     @Override
@@ -385,6 +385,12 @@ public class AdminScheduleActivity extends AppCompatActivity {
                     "Ошибка подлючения к серверу", Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    private void setTitle() {
+        String groupName = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(SP.SP_GROUP, "");
+        this.setTitle(groupName +  " " + "ADMIN");
     }
 
 

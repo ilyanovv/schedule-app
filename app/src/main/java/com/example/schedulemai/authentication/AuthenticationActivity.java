@@ -160,6 +160,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                     switch (users[position]) {
                         case "Студент":
                             editor.putString(SP.SP_GROUP_ID, groupIDData[groupSearch.getClickedPosition()]);
+                            editor.putString(SP.SP_GROUP, groupSearch.getClickedValue());
                             editor.putInt(SP.SP_GLOBAL_DB_VERSION, groupVersionData[groupSearch.getClickedPosition()]);
                             editor.putString(SP.SP_USER_TYPE, SP.STUDENT_TYPE);
                             intent = new Intent(AuthenticationActivity.this, StudentScheduleActivity.class);
@@ -167,12 +168,14 @@ public class AuthenticationActivity extends AppCompatActivity {
                         case "Преподаватель":
                             editor.putString(SP.SP_TEACHER_ID, teacherIDData[teacherSearch.getClickedPosition()]);
                             editor.putInt(SP.SP_GLOBAL_DB_VERSION, teacherVersionData[teacherSearch.getClickedPosition()]);
+                            editor.putString(SP.SP_GROUP, teacherSearch.getClickedValue());
                             editor.putString(SP.SP_USER_TYPE, SP.TEACHER_TYPE);
                             intent = new Intent(AuthenticationActivity.this, TeacherScheduleActivity.class);
                             break;
                         case "Администратор":
                             editor.putString(SP.SP_GROUP_ID, groupIDData[groupSearch.getClickedPosition()]);
                             editor.putInt(SP.SP_GLOBAL_DB_VERSION, groupVersionData[groupSearch.getClickedPosition()]);
+                            editor.putString(SP.SP_GROUP, groupSearch.getClickedValue());
                             //editor.putString(SP.SP_USER_TYPE, SP.ADMIN_TYPE);
                             //intent = new Intent(AuthenticationActivity.this, StudentScheduleActivity.class);
                             new TestConnectionParseTask().execute(etLogin.getText().toString(),

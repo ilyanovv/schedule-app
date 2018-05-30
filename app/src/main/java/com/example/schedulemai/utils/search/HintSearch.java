@@ -107,4 +107,8 @@ public class HintSearch {
         Log.e("RESULT", String.valueOf(result));
         return result;
     }
+
+    public String getClickedValue() {
+        return items.get(getClickedPosition());
+    }
 }

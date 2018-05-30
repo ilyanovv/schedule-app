@@ -6,6 +6,8 @@ package com.example.schedulemai;
 public class SP {
     public static final String SP_GROUP_ID = "group_id";
     public static final String SP_TEACHER_ID = "teacher_id";
+    public static final String SP_GROUP = "group";
+    public static final String SP_TEACHER = "teacher";
     public static final String SP_GLOBAL_DB_VERSION = "version"; //глобальная версия БД;
     public static final String SP_LOCAL_DB_VERSION = "db_ver"; //версия БД на устройстве
 
