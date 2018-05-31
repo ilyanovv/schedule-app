@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,60 +7,54 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.schedulemai.admin.AdminNewLessonActivity">
 
-    <Button
-        android:layout_width="wrap_content"
+
+
+    <TextView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/stSave"
-        android:id="@+id/save_button_a"
-        android:enabled="false"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/stLessonName"
+        android:id="@+id/textViewM_a" />
+
+    <EditText
+        android:id="@+id/lessonNameAdminEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите название занятия..."
+        />
+
+    <ListView
+        android:id="@+id/lessonNameAdminListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/stLessonName"
-        android:id="@+id/textViewM_a"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:text="@string/stLessonType"
+        android:id="@+id/textView2M_a"
+        />
 
-    <Spinner
+    <EditText
+        android:id="@+id/lessonTypeAdminEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sp_lessonname_a"
-        android:layout_below="@+id/textViewM_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:hint="Введите тип занятия..."
+        />
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:text="@string/stLessonType"
-    android:id="@+id/textView2M_a"
-    android:layout_below="@+id/sp_lessonname_a"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:id="@+id/sp_lessontype_a"
+    <ListView
+        android:id="@+id/lessonTypeAdminListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2M_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-    </Spinner>
+        android:visibility="gone"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,37 +62,40 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/stTeacherName"
         android:id="@+id/textView3M_a"
-        android:layout_below="@+id/sp_lessontype_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+       />
 
-    <Spinner
-        android:id="@+id/sp_teachername_a"
+    <EditText
+        android:id="@+id/teacherNameAdminEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3M_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-    </Spinner>
+        android:hint="Введите ФИО препоадавателя..."
+        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/stBuilding"
-        android:id="@+id/textView4M_a"
-        android:layout_below="@+id/sp_teachername_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:id="@+id/sp_building_a"
+    <ListView
+        android:id="@+id/teacherNameAdminListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4M_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-    </Spinner>
+        android:visibility="gone"
+        />
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+        <!--android:text="@string/stBuilding"-->
+        <!--android:id="@+id/textView4M_a"-->
+        <!--android:layout_below="@+id/sp_teachername_a"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true" />-->
+
+    <!--<Spinner-->
+        <!--android:id="@+id/sp_building_a"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/textView4M_a"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true">-->
+    <!--</Spinner>-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -106,68 +103,87 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/stRoom"
         android:id="@+id/textView5M_a"
-        android:layout_below="@+id/sp_building_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+         />
 
-    <Spinner
-        android:id="@+id/sp_room_a"
+    <EditText
+        android:id="@+id/lessonRoomAdminEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView5M_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-    </Spinner>
+        android:hint="Введите название аудитории..."
+        />
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Начало:  "
-        android:id="@+id/textViewBeginTime_a"
-        android:layout_below="@+id/sp_room_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
-
-    <com.github.pinball83.maskededittext.MaskedEditText
-        android:id="@+id/editTextBeginTime_a"
+    <ListView
+        android:id="@+id/lessonRoomAdminListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        app:mask="**:**"
-        app:notMaskedSymbol="*"
-        android:layout_centerVertical="true"
-        android:layout_alignBottom="@+id/textViewBeginTime_a"
-        android:layout_toRightOf="@+id/textViewBeginTime_a"
+        android:visibility="gone"
         />
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Конец:"
-        android:id="@+id/textViewEndTime_a"
-        android:layout_below="@+id/editTextBeginTime_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
-
-    <com.github.pinball83.maskededittext.MaskedEditText
-        android:id="@+id/editTextEndTime_a"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        app:mask="**:**"
-        app:notMaskedSymbol="*"
-        android:layout_centerVertical="true"
-        android:layout_alignBottom="@+id/textViewEndTime_a"
-        android:layout_alignLeft="@+id/editTextBeginTime_a"
-        android:layout_alignStart="@+id/editTextBeginTime_a"
-        />
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Начало:  "
+            android:id="@+id/textViewBeginTime_a"
+            android:layout_marginTop="2dp"
+            />
+
+        <com.github.pinball83.maskededittext.MaskedEditText
+            android:id="@+id/editTextBeginTime_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:mask="**:**"
+            app:notMaskedSymbol="*"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Конец:    "
+            android:id="@+id/textViewEndTime_a"
+            android:layout_marginTop="2dp" />
+
+        <com.github.pinball83.maskededittext.MaskedEditText
+            android:id="@+id/editTextEndTime_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:mask="**:**"
+            app:notMaskedSymbol="*"
+            />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stSave"
+            android:id="@+id/save_button_a"
+            android:layout_gravity="bottom"
+        />
+    </LinearLayout>
+
+
+    <!--TODO: что это?-->
     <Button
         android:id="@+id/buttonRefresh_a"
         android:layout_width="match_parent"
@@ -181,4 +197,4 @@
 
 
 
-</RelativeLayout>
+</LinearLayout>

@@ -92,6 +92,7 @@ abstract public class DataController {
         dbTaskFactory.createTable(Tables.GROUP);
         dbTaskFactory.createTable(Tables.LESSON);
         dbTaskFactory.createTable(Tables.LESSON_TYPE);
+        dbTaskFactory.createTable(Tables.LESSON_ROOM);
     }
 }
 

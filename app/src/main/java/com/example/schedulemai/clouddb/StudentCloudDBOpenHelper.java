@@ -123,7 +123,8 @@ public class StudentCloudDBOpenHelper extends CloudDBOpenHelper{
                     ContentValues cv = new ContentValues();
                     cv.put("lesson_name", obj.getString("lesson_name"));
                     cv.put("lesson_type", obj.getString("lesson_type_name"));
-                    cv.put("lecture_room", obj.getString("lecture_room_number") + " " + obj.getString("building_name"));
+                    //cv.put("lecture_room", obj.getString("lecture_room_number") + " " + obj.getString("building_name"));
+                    cv.put("lecture_room", obj.getString("lecture_room_number"));
                     cv.put("time_begin", obj.getString("time_begin"));
                     cv.put("time_end", obj.getString("time_end"));
                     cv.put("lesson_date", obj.getString("lesson_date"));
@@ -148,11 +149,15 @@ public class StudentCloudDBOpenHelper extends CloudDBOpenHelper{
             toast.show();
             String userType = prefs.getString(SP.SP_USER_TYPE, "");
             if(userType.equals(SP.ADMIN_TYPE)) {
-                Intent intent = new Intent(context, AdminScheduleActivity.class);
+              /*  Intent intent = new Intent(context, AdminScheduleActivity.class);
                 intent.putExtra("dateSt", dateSt);
                 Log.e("DBupdated, start intent", intent.getStringExtra("dateSt"));
                 //TODO: возможно, положить что-то в extras, проверить в scheduleactivity и сделать restart
-                context.startActivity(intent);
+                context.startActivity(intent);*/
+              AdminScheduleActivity.dc.update_db(dateSt, context);
+              AdminScheduleActivity.data.clear();
+              AdminScheduleActivity.data.addAll(AdminScheduleActivity.setAdapterValues());
+              AdminScheduleActivity.adapter.notifyDataSetChanged();
             }
             else if(userType.equals(SP.STUDENT_TYPE)) {
                 Intent intent = new Intent(context, StudentScheduleActivity.class);

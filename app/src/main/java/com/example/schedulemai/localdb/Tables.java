@@ -8,6 +8,7 @@ public enum Tables {
     TEACHER("teacher", "teachers"),
     GROUP("group_tab", "get_all_groups"),
     LESSON("lesson", "lessons"),
+    LESSON_ROOM("lesson_room", "lesson_rooms"),
     LESSON_TYPE("lesson_type", "lesson_types");
 
 

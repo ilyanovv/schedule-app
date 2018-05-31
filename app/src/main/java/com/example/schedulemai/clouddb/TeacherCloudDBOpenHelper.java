@@ -122,7 +122,8 @@ public class TeacherCloudDBOpenHelper extends CloudDBOpenHelper {
                     ContentValues cv = new ContentValues();
                     cv.put("lesson_name", obj.getString("lesson_name"));
                     cv.put("lesson_type", obj.getString("lesson_type_name"));
-                    cv.put("lecture_room", obj.getString("lecture_room_number") + " " + obj.getString("building_name"));
+//                    cv.put("lecture_room", obj.getString("lecture_room_number") + " " + obj.getString("building_name"));
+                    cv.put("lecture_room", obj.getString("lecture_room_number"));
                     cv.put("time_begin", obj.getString("time_begin"));
                     cv.put("time_end", obj.getString("time_end"));
                     cv.put("lesson_date", obj.getString("lesson_date"));

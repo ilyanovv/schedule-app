@@ -168,7 +168,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                         case "Преподаватель":
                             editor.putString(SP.SP_TEACHER_ID, teacherIDData[teacherSearch.getClickedPosition()]);
                             editor.putInt(SP.SP_GLOBAL_DB_VERSION, teacherVersionData[teacherSearch.getClickedPosition()]);
-                            editor.putString(SP.SP_GROUP, teacherSearch.getClickedValue());
+                            editor.putString(SP.SP_TEACHER, teacherSearch.getClickedValue());
                             editor.putString(SP.SP_USER_TYPE, SP.TEACHER_TYPE);
                             intent = new Intent(AuthenticationActivity.this, TeacherScheduleActivity.class);
                             break;

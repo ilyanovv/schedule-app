@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -46,13 +47,14 @@ public class AdminScheduleActivity extends AppCompatActivity {
     Context cont = this;
     public static DataController dc = new StudentDataController();
     public static SimpleAdapter adapter;
+    public static ArrayList<Map<String, Object>> data;
 
-    final String ATTRIBUTE_LESSON_NAME = "lesson_name";
-    final String ATTRIBUTE_LESSON_TYPE = "lesson_type";
-    final String ATTRIBUTE_LESSON_TEACHER = "lesson_teacher";
-    final String ATTRIBUTE_LESSON_TIME = "lesson_time";
-    final String ATTRIBUTE_LESSON_ROOM = "lesson_room";
-    final String ATTRIBUTE_LESSON_COLOR = "lesson_color";
+    private static final String ATTRIBUTE_LESSON_NAME = "lesson_name";
+    private static final String ATTRIBUTE_LESSON_TYPE = "lesson_type";
+    private static final String ATTRIBUTE_LESSON_TEACHER = "lesson_teacher";
+    private static final String ATTRIBUTE_LESSON_TIME = "lesson_time";
+    private static final String ATTRIBUTE_LESSON_ROOM = "lesson_room";
+    private static final String ATTRIBUTE_LESSON_COLOR = "lesson_color";
 
     String dateSt;
     SharedPreferences sPref;
@@ -65,9 +67,6 @@ public class AdminScheduleActivity extends AppCompatActivity {
         Log.e("onCreate ", "AdminScheduleActivity");
         setContentView(R.layout.activity_admin_schedule);
         sPref = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = sPref.edit();
-       // editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
-        editor.apply();
         setTitle();
     }
 
@@ -80,7 +79,12 @@ public class AdminScheduleActivity extends AppCompatActivity {
         Date curDate;
         if(extras == null)
             Log.e("EXTRAS = ", "NULL");
-
+        else {
+            if ("YES".equals(extras.getString("Reload"))){
+                editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
+                editor.apply();
+            }
+        }
 
         try{
             dateSt = extras.getString("dateSt");
@@ -107,38 +111,8 @@ public class AdminScheduleActivity extends AppCompatActivity {
         Log.e("dateSt = ", dateSt);
         dc.update_db(dateSt, cont);
 
-        Lesson lesson = null;
         ListView lv = (ListView) findViewById(R.id.lessons_a);
-        String[] lessons_names = new String[dc.size_db()];
-        String[] lessons_types = new String[dc.size_db()];
-        String[] lessons_teachers = new String[dc.size_db()];
-        String[] lessons_time = new String[dc.size_db()];
-        String[] lessons_rooms = new String[dc.size_db()];
-        int[] lessons_colors = new int[dc.size_db()];
-        for (int i = 0; i < dc.size_db(); i++) {
-            lesson = dc.get_from_db(i);
-            lessons_names[i] = lesson.getName();
-            lessons_types[i] = lesson.getLessonType();
-            lessons_teachers[i] = lesson.getTeacher();
-            lessons_time[i] = lesson.getTimeBegin() + " - " + lesson.getTimeEnd();
-            lessons_rooms[i] = lesson.getClassroom();
-            lessons_colors[i] = 0xaaff00;
-        }
-
-
-        // упаковываем данные в понятную для адаптера структуру
-        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(
-                lessons_names.length);
-        for (int i = 0; i < lessons_names.length; i++) {
-            Map<String, Object> m = new HashMap<>();
-            m.put(ATTRIBUTE_LESSON_NAME, lessons_names[i]);
-            m.put(ATTRIBUTE_LESSON_TYPE, lessons_types[i]);
-            m.put(ATTRIBUTE_LESSON_TEACHER, lessons_teachers[i]);
-            m.put(ATTRIBUTE_LESSON_COLOR, lessons_colors[i]);
-            m.put(ATTRIBUTE_LESSON_TIME, lessons_time[i]);
-            m.put(ATTRIBUTE_LESSON_ROOM, lessons_rooms[i]);
-            data.add(m);
-        }
+        data = setAdapterValues();
 
         // массив имен атрибутов, из которых будут читаться данные
         String[] from = { ATTRIBUTE_LESSON_NAME, ATTRIBUTE_LESSON_TYPE, ATTRIBUTE_LESSON_TEACHER,
@@ -187,34 +161,71 @@ public class AdminScheduleActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        // getIntent() should always return the most recent
-        Log.e("onNewIntent", Integer.toString(dc.size_db()));
-        try {
-            Log.e("onNewIntent", intent.getExtras().getString("dateSt"));
-        }catch (Exception e){};
-        try {
-            String ReloadSt = intent.getExtras().getString("Reload");
-            if(ReloadSt.equals("YES")){
-                editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
-                editor.apply();
-            }
-        }catch (Exception e){e.printStackTrace();};
-        setIntent(intent);
-    }
+    @NonNull
+    public static ArrayList<Map<String, Object>> setAdapterValues() {
+        String[] lessons_names = new String[dc.size_db()];
+        String[] lessons_types = new String[dc.size_db()];
+        String[] lessons_teachers = new String[dc.size_db()];
+        String[] lessons_time = new String[dc.size_db()];
+        String[] lessons_rooms = new String[dc.size_db()];
+        int[] lessons_colors = new int[dc.size_db()];
+        for (int i = 0; i < dc.size_db(); i++) {
+            Lesson lesson = dc.get_from_db(i);
+            lessons_names[i] = lesson.getName();
+            lessons_types[i] = lesson.getLessonType();
+            lessons_teachers[i] = lesson.getTeacher();
+            lessons_time[i] = lesson.getTimeBegin() + " - " + lesson.getTimeEnd();
+            lessons_rooms[i] = lesson.getClassroom();
+            lessons_colors[i] = 0xaaff00;
+        }
 
 
-    @Override
-    public void onDestroy(){
-        // Очистите все ресурсы. Это касается завершения работы
-        // потоков, закрытия соединений с базой данных и т. д.
-        dc.database.close();
-        dc.database = null;
-        Log.e("DB", "Closed");
-        super.onDestroy();
+        // упаковываем данные в понятную для адаптера структуру
+        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(
+                lessons_names.length);
+        for (int i = 0; i < lessons_names.length; i++) {
+            Map<String, Object> m = new HashMap<>();
+            m.put(ATTRIBUTE_LESSON_NAME, lessons_names[i]);
+            m.put(ATTRIBUTE_LESSON_TYPE, lessons_types[i]);
+            m.put(ATTRIBUTE_LESSON_TEACHER, lessons_teachers[i]);
+            m.put(ATTRIBUTE_LESSON_COLOR, lessons_colors[i]);
+            m.put(ATTRIBUTE_LESSON_TIME, lessons_time[i]);
+            m.put(ATTRIBUTE_LESSON_ROOM, lessons_rooms[i]);
+            data.add(m);
+        }
+        return data;
     }
+
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        // getIntent() should always return the most recent
+//        Log.e("onNewIntent", Integer.toString(dc.size_db()));
+//        try {
+//            Log.e("onNewIntent", intent.getExtras().getString("dateSt"));
+//        }catch (Exception e){};
+//        try {
+//            String ReloadSt = intent.getExtras().getString("Reload");
+//            if(ReloadSt.equals("YES")){
+//                editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
+//                editor.apply();
+//            }
+//        }catch (Exception e){e.printStackTrace();};
+//        setIntent(intent);
+//    }
+
+
+//    @Override
+//    public void onDestroy(){
+//        // Очистите все ресурсы. Это касается завершения работы
+//        // потоков, закрытия соединений с базой данных и т. д.
+//        if (dc.database != null){
+//            dc.database.close();
+//            dc.database = null;
+//        }
+//        Log.e("DB", "Closed");
+//        super.onDestroy();
+//    }
 
 
     class MyViewBinder implements SimpleAdapter.ViewBinder {
@@ -245,6 +256,7 @@ public class AdminScheduleActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.menu_change_user:
+                editor = sPref.edit();
                 editor.putString(SP.SP_GROUP_ID, null);
                 editor.putString(SP.SP_TEACHER_ID, null);
                 editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
@@ -321,6 +333,7 @@ public class AdminScheduleActivity extends AppCompatActivity {
         intent.putExtra("lesson_date", lesson.getLessonDate());
         intent.putExtra("teacher_fn", lesson.getTeacher());
         intent.putExtra("record_id", lesson.getRecordId());
+        intent.putExtra("curDate", dateSt);
     }
 
 
@@ -366,6 +379,7 @@ public class AdminScheduleActivity extends AppCompatActivity {
                         "Занятия успешно удалены", Toast.LENGTH_SHORT);
                 toast.show();
                 //Intent intent = getIntent();
+                //TODO: нужно не создавать новую активность, а работать в существующей
                 Intent intent = new Intent(AdminScheduleActivity.this, AdminScheduleActivity.class);
                 intent.putExtra("Reload", "YES");
                 intent.putExtra("dateSt", dateSt);

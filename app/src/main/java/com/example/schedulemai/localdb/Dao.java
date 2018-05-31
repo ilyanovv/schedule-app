@@ -25,6 +25,14 @@ public class Dao {
         this.db = db;
     }
 
+    public static List<String> getListOfValues(List<Map<String, String>> mapList, String key) {
+        List<String> list = new ArrayList<>();
+        for (Map<String, String> map : mapList) {
+            list.add(map.get(key));
+        }
+        return list;
+    }
+
     public void createTableAndInsertValues(Tables tableName, JSONArray jsonArray) {
         try {
             db.beginTransaction();
@@ -134,4 +142,6 @@ public class Dao {
         Log.e("SQLite", stringBuilder.toString());
         db.execSQL(stringBuilder.toString());
     }
+
+
 }
