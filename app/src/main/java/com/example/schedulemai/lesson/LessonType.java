@@ -7,21 +7,23 @@ import org.jetbrains.annotations.NotNull;
  */
 
 public enum LessonType {
-    LAB("ЛК"),
-    SEMINAR("ПЗ"),
-    LECTURE("ЛР"),
-    UNKNOWN("unknown");
+    LAB("ЛК", "Лекция"),
+    SEMINAR("ПЗ", "Практическое занятие"),
+    LECTURE("ЛР", "Лабораторная"),
+    UNKNOWN("unknown", "Занятие");
 
     private final String type;
+    private final String name;
 
-    LessonType(final String type) {
+    LessonType(final String type, final String name) {
         this.type = type;
+        this.name = name;
     }
 
     @NotNull
     public static LessonType fromString(String text) {
         for (LessonType lessonType : LessonType.values()) {
-            if (lessonType.getType().equals(text)) {
+            if (lessonType.getType().equals(text) || lessonType.getName().equals(text)) {
                 return lessonType;
             }
         }
@@ -33,6 +35,9 @@ public enum LessonType {
 
     }
 
+    public String getName() {
+        return name;
+    }
 
     @Override
     public String toString() {

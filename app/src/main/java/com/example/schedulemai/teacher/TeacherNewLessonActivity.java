@@ -18,10 +18,12 @@ import com.example.schedulemai.R;
 import com.example.schedulemai.lesson.Lesson;
 import com.example.schedulemai.lesson.LessonFactory;
 
+import java.util.List;
+
 //TODO: РЕАЛИЗОВАТЬ ДОБАВЛЕНИЕ ЗАНЯТИЯ В ЛОКАЛЬНУЮ БАЗУ ДАННЫХ
 //TODO: Обработать получаемые из базы значения: они могут быть равны null
 public class TeacherNewLessonActivity extends Activity {
-    String[] data = Lesson.getLessonTypes();
+    List<String> data;
     EditText name;
     EditText groups;
     EditText begin_time;
@@ -40,6 +42,8 @@ public class TeacherNewLessonActivity extends Activity {
         end_time = (EditText) findViewById(R.id.editTextEndTime_t);
         lesson_room = (EditText) findViewById(R.id.editTextLessonRoom_t);
         type = (Spinner) findViewById(R.id.type1_t);
+        data = TeacherScheduleActivity.dc.getDao().getLessonTypes();
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

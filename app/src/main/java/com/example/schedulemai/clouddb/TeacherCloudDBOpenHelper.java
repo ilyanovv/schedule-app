@@ -153,9 +153,10 @@ public class TeacherCloudDBOpenHelper extends CloudDBOpenHelper {
             Toast toast = Toast.makeText(context,
                     "Расписание успешно обновлено", Toast.LENGTH_SHORT);
             toast.show();
-            Intent intent = new Intent(context, TeacherScheduleActivity.class);
-            intent.putExtra("dateSt", dateSt);
-            context.startActivity(intent);
+            TeacherScheduleActivity.dc.update_db(dateSt, context);
+            TeacherScheduleActivity.data.clear();
+            TeacherScheduleActivity.data.addAll(TeacherScheduleActivity.setAdapterValues());
+            TeacherScheduleActivity.adapter.notifyDataSetChanged();
         }
 
         @Override

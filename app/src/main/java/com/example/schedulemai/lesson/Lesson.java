@@ -40,12 +40,12 @@ abstract public class Lesson {
 
     public static int getBackgroundStyle(String lessonType) {
         switch (lessonType){
-            case "ЛК":
+            case "Лекция":
+                return R.drawable.lecture_back_selector;
+            case "Практическое занятие":
+                return R.drawable.sem_back_selector;
+            case "Лабораторная":
                 return R.drawable.lab_back_selector;
-            case "ПЗ":
-                return R.drawable.sem_back;
-            case "ЛР":
-                return R.drawable.lecture_back;
             case "Экзамен":
                 return R.drawable.exam_back;
             case "Зачет":
@@ -59,10 +59,7 @@ abstract public class Lesson {
         }
     }
 
-    /**FIXME: получать список из БД **/
-    public static String[] getLessonTypes() {
-        return new String[] {"Лекция", "Семинар", "Лабораторная", "Экзамен", "Зачет", "Консультация"};
-    }
+
 
 
     public String getRecordId() {

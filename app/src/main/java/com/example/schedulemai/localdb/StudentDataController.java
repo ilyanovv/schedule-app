@@ -11,6 +11,7 @@ import com.example.schedulemai.asynctasks.DbTaskFactory;
 import com.example.schedulemai.lesson.Lesson;
 import com.example.schedulemai.SP;
 import com.example.schedulemai.lesson.LessonFactory;
+import com.example.schedulemai.lesson.LessonType;
 import com.example.schedulemai.student.StudentScheduleActivity;
 import com.example.schedulemai.clouddb.CloudDBOpenHelper;
 import com.example.schedulemai.clouddb.StudentCloudDBOpenHelper;
@@ -93,10 +94,13 @@ public class StudentDataController extends DataController{
         cv.put("lesson_date", les.getLessonDate());
         cv.put("teacher_fn", les.getTeacher());
         cv.put("record_id", les.getRecordId());
-        String whereClause = "lesson_name = ? AND lesson_type = ? AND time_begin = ? AND lesson_date = ?";
+        String whereClause = "lesson_name = ? AND (lesson_type = ? OR lesson_type = ? )" +
+                " AND time_begin = ? AND lesson_date = ?";
+        LessonType lessonType = LessonType.fromString(oldLesson.getLessonType());
         String[] whereArgs = new String[] {
                 oldLesson.getName(),
-                oldLesson.getLessonType(),
+                lessonType.getName(),
+                lessonType.getType(),
                 oldLesson.getTimeBegin(),
                 oldLesson.getLessonDate()
         };

@@ -16,9 +16,11 @@ import android.widget.Spinner;
 import com.example.schedulemai.R;
 import com.example.schedulemai.lesson.Lesson;
 
+import java.util.List;
+
 
 public class StudentModifyLessonActivity extends Activity {
-    String[] data = Lesson.getLessonTypes();
+    List<String> data;
     EditText name;
     EditText teacher;
     EditText begin_time;
@@ -38,6 +40,8 @@ public class StudentModifyLessonActivity extends Activity {
         end_time = (EditText) findViewById(R.id.editTextEndTime);
         lesson_room = (EditText) findViewById(R.id.editTextLessonRoom);
         type = (Spinner) findViewById(R.id.type1);
+        data = StudentScheduleActivity.dc.getDao().getLessonTypes();
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -78,8 +82,8 @@ public class StudentModifyLessonActivity extends Activity {
         end_time.setText(extras.getString("time_end"));
         lesson_room.setText(extras.getString("lecture_room"));
         String lesson_type = (String)extras.getString("lesson_type");
-        for(int i=0; i<data.length; i++){
-            if (data[i].equals(lesson_type)){
+        for(int i=0; i<data.size(); i++){
+            if (data.get(i).equals(lesson_type)){
                 type.setSelection(i);
                 break;
             }

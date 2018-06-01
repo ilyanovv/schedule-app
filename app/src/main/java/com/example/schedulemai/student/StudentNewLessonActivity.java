@@ -17,11 +17,17 @@ import android.widget.Spinner;
 import com.example.schedulemai.R;
 import com.example.schedulemai.lesson.Lesson;
 import com.example.schedulemai.lesson.LessonFactory;
+import com.example.schedulemai.lesson.LessonType;
+import com.example.schedulemai.localdb.Dao;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 //TODO: РЕАЛИЗОВАТЬ ДОБАВЛЕНИЕ ЗАНЯТИЯ В ЛОКАЛЬНУЮ БАЗУ ДАННЫХ
 //TODO: Обработать получаемые из базы значения: они могут быть равны null
 public class StudentNewLessonActivity extends Activity {
-    String[] data = Lesson.getLessonTypes();
+    List<String> data;
     EditText name;
     EditText teacher;
     EditText begin_time;
@@ -40,6 +46,8 @@ public class StudentNewLessonActivity extends Activity {
         end_time = (EditText) findViewById(R.id.editTextEndTime);
         lesson_room = (EditText) findViewById(R.id.editTextLessonRoom);
         type = (Spinner) findViewById(R.id.type1);
+        data = StudentScheduleActivity.dc.getDao().getLessonTypes();
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

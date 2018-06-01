@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -43,14 +44,16 @@ public class StudentScheduleActivity extends AppCompatActivity {
 
     Context cont = this;
     public static DataController dc = new StudentDataController();
-    SimpleAdapter adapter;
+    public static SimpleAdapter adapter;
+    public static ArrayList<Map<String, Object>> data;
 
-    final String ATTRIBUTE_LESSON_NAME = "lesson_name";
-    final String ATTRIBUTE_LESSON_TYPE = "lesson_type";
-    final String ATTRIBUTE_LESSON_TEACHER = "lesson_teacher";
-    final String ATTRIBUTE_LESSON_TIME = "lesson_time";
-    final String ATTRIBUTE_LESSON_ROOM = "lesson_room";
-    final String ATTRIBUTE_LESSON_COLOR = "lesson_color";
+
+    public static final String ATTRIBUTE_LESSON_NAME = "lesson_name";
+    public static final String ATTRIBUTE_LESSON_TYPE = "lesson_type";
+    public static final String ATTRIBUTE_LESSON_TEACHER = "lesson_teacher";
+    public static final String ATTRIBUTE_LESSON_TIME = "lesson_time";
+    public static final String ATTRIBUTE_LESSON_ROOM = "lesson_room";
+    public static final String ATTRIBUTE_LESSON_COLOR = "lesson_color";
 
     String dateSt;
 
@@ -95,39 +98,8 @@ public class StudentScheduleActivity extends AppCompatActivity {
         Log.e("dateSt = ", dateSt);
         dc.update_db(dateSt, cont);
 
-        Lesson lesson = null;
         ListView lv = (ListView) findViewById(R.id.lessons);
-        String[] lessons_names = new String[dc.size_db()];
-        String[] lessons_types = new String[dc.size_db()];
-        String[] lessons_teachers = new String[dc.size_db()];
-        String[] lessons_time = new String[dc.size_db()];
-        String[] lessons_rooms = new String[dc.size_db()];
-        int[] lessons_colors = new int[dc.size_db()];
-        for (int i = 0; i < dc.size_db(); i++) {
-            lesson = dc.get_from_db(i);
-            lessons_names[i] = lesson.getName();
-            lessons_types[i] = lesson.getLessonType();
-            lessons_teachers[i] = lesson.getTeacher();
-            lessons_time[i] = lesson.getTimeBegin() + " - " + lesson.getTimeEnd();
-            lessons_rooms[i] = lesson.getClassroom();
-            lessons_colors[i] = 0xaaff00;
-        }
-
-
-        // упаковываем данные в понятную для адаптера структуру
-        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(
-                lessons_names.length);
-        Map<String, Object> m;
-        for (int i = 0; i < lessons_names.length; i++) {
-            m = new HashMap<String, Object>();
-            m.put(ATTRIBUTE_LESSON_NAME, lessons_names[i]);
-            m.put(ATTRIBUTE_LESSON_TYPE, lessons_types[i]);
-            m.put(ATTRIBUTE_LESSON_TEACHER, lessons_teachers[i]);
-            m.put(ATTRIBUTE_LESSON_COLOR, lessons_colors[i]);
-            m.put(ATTRIBUTE_LESSON_TIME, lessons_time[i]);
-            m.put(ATTRIBUTE_LESSON_ROOM, lessons_rooms[i]);
-            data.add(m);
-        }
+        data = setAdapterValues();
 
         // массив имен атрибутов, из которых будут читаться данные
         String[] from = { ATTRIBUTE_LESSON_NAME, ATTRIBUTE_LESSON_TYPE, ATTRIBUTE_LESSON_TEACHER,
@@ -182,6 +154,42 @@ public class StudentScheduleActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @NonNull
+    public static ArrayList<Map<String, Object>> setAdapterValues() {
+        String[] lessons_names = new String[dc.size_db()];
+        String[] lessons_types = new String[dc.size_db()];
+        String[] lessons_teachers = new String[dc.size_db()];
+        String[] lessons_time = new String[dc.size_db()];
+        String[] lessons_rooms = new String[dc.size_db()];
+        int[] lessons_colors = new int[dc.size_db()];
+        for (int i = 0; i < dc.size_db(); i++) {
+            Lesson lesson = dc.get_from_db(i);
+            lessons_names[i] = lesson.getName();
+            lessons_types[i] = lesson.getLessonType();
+            lessons_teachers[i] = lesson.getTeacher();
+            lessons_time[i] = lesson.getTimeBegin() + " - " + lesson.getTimeEnd();
+            lessons_rooms[i] = lesson.getClassroom();
+            lessons_colors[i] = 0xaaff00;
+        }
+
+
+        // упаковываем данные в понятную для адаптера структуру
+        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(
+                lessons_names.length);
+        Map<String, Object> m;
+        for (int i = 0; i < lessons_names.length; i++) {
+            m = new HashMap<String, Object>();
+            m.put(ATTRIBUTE_LESSON_NAME, lessons_names[i]);
+            m.put(ATTRIBUTE_LESSON_TYPE, lessons_types[i]);
+            m.put(ATTRIBUTE_LESSON_TEACHER, lessons_teachers[i]);
+            m.put(ATTRIBUTE_LESSON_COLOR, lessons_colors[i]);
+            m.put(ATTRIBUTE_LESSON_TIME, lessons_time[i]);
+            m.put(ATTRIBUTE_LESSON_ROOM, lessons_rooms[i]);
+            data.add(m);
+        }
+        return data;
     }
 
     @Override

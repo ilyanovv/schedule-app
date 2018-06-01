@@ -67,6 +67,15 @@ public class Dao {
         return result;
     }
 
+    public List<String> getLessonTypes() {
+        List<String> ret = new ArrayList<>();
+        List<Map<String, String>> lessons = getValues(Tables.LESSON_TYPE);
+        for (Map<String, String> map : lessons) {
+            ret.add(map.get("lesson_type_name"));
+        }
+        return ret;
+    }
+
     public List<Map<String, String>> getValues(Tables table) {
         List<Map<String, String>> result = new ArrayList<>();
         String query = "SELECT * FROM "

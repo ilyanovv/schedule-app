@@ -160,9 +160,10 @@ public class StudentCloudDBOpenHelper extends CloudDBOpenHelper{
               AdminScheduleActivity.adapter.notifyDataSetChanged();
             }
             else if(userType.equals(SP.STUDENT_TYPE)) {
-                Intent intent = new Intent(context, StudentScheduleActivity.class);
-                intent.putExtra("dateSt", dateSt);
-                context.startActivity(intent);
+                StudentScheduleActivity.dc.update_db(dateSt, context);
+                StudentScheduleActivity.data.clear();
+                StudentScheduleActivity.data.addAll(StudentScheduleActivity.setAdapterValues());
+                StudentScheduleActivity.adapter.notifyDataSetChanged();
             }
         }
 

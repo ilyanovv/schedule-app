@@ -18,21 +18,22 @@ public class LessonFactory {
             String lessonDate,
             String groupNumber) {
         Lesson lesson;
-        switch (LessonType.fromString(lessonType)) {
+        LessonType type = LessonType.fromString(lessonType);
+        switch (type){
             case LAB :
-                lesson = new Lab(recordId, name, teacher, lessonType, timeBegin, timeEnd,
+                lesson = new Lab(recordId, name, teacher, type.getName(), timeBegin, timeEnd,
                         classroom, lessonDate, groupNumber);
                 break;
             case LECTURE:
-                lesson = new Lecture(recordId, name, teacher, lessonType, timeBegin, timeEnd,
+                lesson = new Lecture(recordId, name, teacher, type.getName(), timeBegin, timeEnd,
                         classroom, lessonDate, groupNumber);
                 break;
             case SEMINAR:
-                lesson = new Seminar(recordId, name, teacher, lessonType, timeBegin, timeEnd,
+                lesson = new Seminar(recordId, name, teacher, type.getName(), timeBegin, timeEnd,
                         classroom, lessonDate, groupNumber);
                 break;
             default:
-                lesson = new UnknownLesson(recordId, name, teacher, lessonType, timeBegin, timeEnd,
+                lesson = new UnknownLesson(recordId, name, teacher, type.getName(), timeBegin, timeEnd,
                         classroom, lessonDate, groupNumber);
                 break;
         }
