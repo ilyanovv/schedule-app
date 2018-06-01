@@ -168,10 +168,15 @@ public class AdminNewLessonActivity extends AppCompatActivity {
                 Toast toast = Toast.makeText(AdminNewLessonActivity.this,
                         "Занятия успешно добавлены", Toast.LENGTH_SHORT);
                 toast.show();
-                Intent intent = new Intent(AdminNewLessonActivity.this, AdminScheduleActivity.class);
-                intent.putExtra("Reload", "YES");
-                intent.putExtra("dateSt", getIntent().getExtras().getString("curDate"));
-                startActivity(intent);
+                AdminScheduleActivity.dc.update_db(getIntent().getExtras().getString("curDate"), context);
+                AdminScheduleActivity.data.clear();
+                AdminScheduleActivity.data.addAll(AdminScheduleActivity.setAdapterValues());
+                AdminScheduleActivity.adapter.notifyDataSetChanged();
+                SharedPreferences.Editor editor =
+                        PreferenceManager.getDefaultSharedPreferences(
+                                AdminNewLessonActivity.this).edit();
+                editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
+                editor.apply();
                 finish();
             }
             else{

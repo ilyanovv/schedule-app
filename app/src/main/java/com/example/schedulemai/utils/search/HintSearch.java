@@ -82,6 +82,10 @@ public class HintSearch {
             }
         });
 
+        if (editText.getText().length() > 0) {
+            listView.setVisibility(View.GONE);
+        }
+
     }
 
     public void searchItem(String textToSearch){

@@ -380,10 +380,13 @@ public class AdminScheduleActivity extends AppCompatActivity {
                 toast.show();
                 //Intent intent = getIntent();
                 //TODO: нужно не создавать новую активность, а работать в существующей
-                Intent intent = new Intent(AdminScheduleActivity.this, AdminScheduleActivity.class);
-                intent.putExtra("Reload", "YES");
-                intent.putExtra("dateSt", dateSt);
-                startActivity(intent);
+                editor = sPref.edit();
+                editor.putInt(SP.SP_LOCAL_DB_VERSION, -1);
+                editor.apply();
+                AdminScheduleActivity.dc.update_db(dateSt, AdminScheduleActivity.this);
+                AdminScheduleActivity.data.clear();
+                AdminScheduleActivity.data.addAll(AdminScheduleActivity.setAdapterValues());
+                AdminScheduleActivity.adapter.notifyDataSetChanged();
             }
             else{
                 Toast toast = Toast.makeText(AdminScheduleActivity.this,
