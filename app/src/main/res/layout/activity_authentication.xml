@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,11 +7,12 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".authentication.AuthenticationActivity">
 
     <TextView
         android:id="@+id/tvUserType"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/user_type"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
@@ -19,8 +20,7 @@
     <Spinner
         android:id="@+id/spinnerUserType"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvUserType">
+        android:layout_height="wrap_content">
     </Spinner>
 
     <TextView
@@ -28,14 +28,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/group_name"
-        android:layout_below="@id/spinnerUserType"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
         android:id="@+id/groupEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvGroupNumber"
         android:hint="Search"
         />
 
@@ -43,7 +41,6 @@
         android:id="@+id/groupListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/groupEditText"
         android:visibility="gone"
         >
     </ListView>
@@ -53,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/teacher_name"
-        android:layout_below="@id/spinnerUserType"
+        android:visibility="gone"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 
@@ -62,7 +59,6 @@
         android:id="@+id/teacherEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvTeacherName"
         android:visibility="gone"
         android:hint="Search"
         />
@@ -71,7 +67,6 @@
         android:id="@+id/teacherListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/teacherEditText"
         android:visibility="gone"
         >
     </ListView>
@@ -82,21 +77,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/loginSt"
-        android:layout_below="@id/groupListView"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editTextLogin"
-        android:layout_below="@id/tvLogin"/>
+        />
 
     <TextView
         android:id="@+id/tvPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/passwordSt"
-        android:layout_below="@id/editTextLogin"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
@@ -104,23 +97,35 @@
         android:layout_height="wrap_content"
         android:id="@+id/editTextPassword"
         android:inputType="textPassword"
-        android:layout_below="@id/tvPassword"/>
+        />
 
-    <Button
-        android:id="@+id/buttonGroupNumberOrTeacherName"
+
+
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/stNext"
-        android:enabled="false"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/buttonGroupNumberOrTeacherName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stNext"
+            android:enabled="false"
+            android:layout_gravity="bottom"
+            />
 
-    <Button
-        android:id="@+id/buttonRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/stRefresh"
-        android:visibility="gone"
-        android:enabled="false"
-        android:layout_alignParentBottom="true" />
+        <Button
+            android:id="@+id/buttonRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stRefresh"
+            android:visibility="gone"
+            android:enabled="false"
+            android:layout_gravity="bottom"
+            />
 
-</RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

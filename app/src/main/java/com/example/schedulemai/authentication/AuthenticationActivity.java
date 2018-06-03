@@ -41,9 +41,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: сделать кнопку "обновить": onStop() и onRestart() - когда доступа к интернету нет
 //TODO: версию расписания для группы получить в этом же json-е
-//TODO: внутри doInBackground, видимо, нельзя Toast вызывать - решение как в меню change_user
 public class AuthenticationActivity extends AppCompatActivity {
     private String[] groupIDData;
     private int[] groupVersionData;
@@ -63,6 +61,9 @@ public class AuthenticationActivity extends AppCompatActivity {
     EditText teacherEditText;
     EditText groupEditText;
     Context context = this;
+
+    public static final Object lock = new Object();
+    public volatile int enabledCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,11 +218,12 @@ public class AuthenticationActivity extends AppCompatActivity {
                 urlConnection.setRequestMethod("GET");
                 // while(true) {
                 try {
+                    urlConnection.setConnectTimeout(5000);
                     urlConnection.connect();
                     //       break;
                 } catch (Exception e) {
-                    cancel(false);
-                    while (!isCancelled()){}
+                    cancel(true);
+                    while (!isCancelled()){cancel(true);}
                 }
                 //  }
                 InputStream inputStream = urlConnection.getInputStream();
@@ -267,10 +269,16 @@ public class AuthenticationActivity extends AppCompatActivity {
                 groupSearch = new HintSearch(groupEditText, groupListView, context, data);
                 groupSearch.setUp();
 
-                refreshButton.setEnabled(false);
-                refreshButton.setVisibility(View.GONE);
-                gnButton.setEnabled(true);
-                gnButton.setVisibility(View.VISIBLE);
+                synchronized (lock) {
+                    enabledCount++;
+                }
+
+                if (enabledCount == 2) {
+                    refreshButton.setEnabled(false);
+                    refreshButton.setVisibility(View.GONE);
+                    gnButton.setEnabled(true);
+                    gnButton.setVisibility(View.VISIBLE);
+                }
             }
         }
 
@@ -303,11 +311,12 @@ public class AuthenticationActivity extends AppCompatActivity {
                 urlConnection.setRequestMethod("GET");
                 // while(true) {
                 try {
+                    urlConnection.setConnectTimeout(5000);
                     urlConnection.connect();
                     //       break;
                 } catch (Exception e) {
-                    cancel(false);
-                    while (!isCancelled()){}
+                    cancel(true);
+                    while (!isCancelled()){cancel(true);}
                 }
                 //  }
                 InputStream inputStream = urlConnection.getInputStream();
@@ -355,10 +364,16 @@ public class AuthenticationActivity extends AppCompatActivity {
                 ListView teacherListView = findViewById(R.id.teacherListView);
                 teacherSearch = new HintSearch(teacherEditText, teacherListView, context, data);
                 teacherSearch.setUp();
-                refreshButton.setEnabled(false);
-                refreshButton.setVisibility(View.GONE);
-                gnButton.setEnabled(true);
-                gnButton.setVisibility(View.VISIBLE);
+                synchronized (lock) {
+                    enabledCount++;
+                }
+
+                if (enabledCount == 2) {
+                    refreshButton.setEnabled(false);
+                    refreshButton.setVisibility(View.GONE);
+                    gnButton.setEnabled(true);
+                    gnButton.setVisibility(View.VISIBLE);
+                }
 
             }
         }
@@ -504,6 +519,13 @@ public class AuthenticationActivity extends AppCompatActivity {
                     "Ошибка подлючения к серверу", Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        enabledCount = 0;
     }
 }
 
