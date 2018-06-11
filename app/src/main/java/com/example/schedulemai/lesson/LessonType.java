@@ -10,7 +10,9 @@ public enum LessonType {
     LAB("ЛК", "Лекция"),
     SEMINAR("ПЗ", "Практическое занятие"),
     LECTURE("ЛР", "Лабораторная"),
-    UNKNOWN("unknown", "Занятие");
+    EXAM("Экзамен", "Экзамен"),
+    CONDITION("Зачет", "Зачет"),
+    UNKNOWN("Занятие", "Занятие");
 
     private final String type;
     private final String name;

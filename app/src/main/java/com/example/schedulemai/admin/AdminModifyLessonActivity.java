@@ -138,6 +138,7 @@ public class AdminModifyLessonActivity extends AppCompatActivity {
             try {
                 URL url = new URL(SP.ROOT_SERVICE_URL + "/update_lesson");
                 urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setConnectTimeout(5000);
                 urlConnection.setRequestMethod("POST");
                 Uri.Builder builder = new Uri.Builder()
                         .appendQueryParameter("login", params[0])

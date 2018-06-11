@@ -47,15 +47,15 @@ abstract public class Lesson {
             case "Лабораторная":
                 return R.drawable.lab_back_selector;
             case "Экзамен":
-                return R.drawable.exam_back;
+                return R.drawable.exam_back_selector;
             case "Зачет":
-                return R.drawable.condition_back;
+                return R.drawable.condition_back_selector;
             case "Консультация":
-                return R.drawable.cons_back;
+                return R.drawable.cons_back_selector;
             case "unknown":
-                return R.drawable.cons_back;
+                return R.drawable.cons_back_selector;
             default:
-                return R.drawable.cons_back;
+                return R.drawable.cons_back_selector;
         }
     }
 

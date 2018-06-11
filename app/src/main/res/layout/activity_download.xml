@@ -12,7 +12,6 @@
         android:layout_above="@+id/buttonOK"
         android:layout_alignParentTop="true"
         android:selectedWeekBackgroundColor="#00ff0000"
-        android:selectedDateVerticalBar="@drawable/date_vertical_bar"
         android:weekNumberColor="#0000ff"
         android:weekSeparatorLineColor="#00ff00" >
     </CalendarView>

@@ -12,7 +12,7 @@ public class UnknownLesson extends Lesson {
 
     public UnknownLesson(String recordId, String name, String teacher, String lessonType, String timeBegin,
                          String timeEnd, String classroom, String lessonDate, String groupNumber) {
-        super(recordId, name, teacher, LessonType.UNKNOWN.getType(), timeBegin, timeEnd, classroom,
+        super(recordId, name, teacher, LessonType.UNKNOWN.getName(), timeBegin, timeEnd, classroom,
                 lessonDate, groupNumber);
     }
 

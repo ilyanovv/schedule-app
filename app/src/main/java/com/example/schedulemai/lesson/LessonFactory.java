@@ -32,6 +32,14 @@ public class LessonFactory {
                 lesson = new Seminar(recordId, name, teacher, type.getName(), timeBegin, timeEnd,
                         classroom, lessonDate, groupNumber);
                 break;
+            case EXAM:
+                lesson = new Exam(recordId, name, teacher, type.getName(), timeBegin, timeEnd,
+                        classroom, lessonDate, groupNumber);
+                break;
+            case CONDITION:
+                lesson = new Condition(recordId, name, teacher, type.getName(), timeBegin, timeEnd,
+                        classroom, lessonDate, groupNumber);
+                break;
             default:
                 lesson = new UnknownLesson(recordId, name, teacher, type.getName(), timeBegin, timeEnd,
                         classroom, lessonDate, groupNumber);

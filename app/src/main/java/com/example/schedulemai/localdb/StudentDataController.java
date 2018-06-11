@@ -69,10 +69,9 @@ public class StudentDataController extends DataController{
     public void remove_from_db(int i, Context cont){
         Lesson oldLesson = get_from_db(i);
         SQLiteDatabase database = getOpenedCloudDatabase(cont, "");
-        String whereClause = "lesson_name = ? AND lesson_type = ? AND time_begin = ? AND lesson_date = ?";
+        String whereClause = "lesson_name = ? AND time_begin = ? AND lesson_date = ?";
         String[] whereArgs = new String[] {
                 oldLesson.getName(),
-                oldLesson.getLessonType(),
                 oldLesson.getTimeBegin(),
                 oldLesson.getLessonDate()
         };
@@ -163,7 +162,9 @@ public class StudentDataController extends DataController{
 
         }
         //последнее занятие
-        StudentScheduleActivity.dc.add_to_db(prevLesson);
+        if (prevLesson != null){
+            StudentScheduleActivity.dc.add_to_db(prevLesson);
+        }
         c.close();
         // AddToDB(count, values, database);
         // database.close();
