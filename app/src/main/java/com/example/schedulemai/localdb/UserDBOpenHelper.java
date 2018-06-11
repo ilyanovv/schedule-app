@@ -69,7 +69,7 @@ public class UserDBOpenHelper extends SQLiteOpenHelper {
                     + "lesson_date, "
                     + "teacher_fn"
                     + ");");
-        db.close();
+        //db.close();
     }
 
 

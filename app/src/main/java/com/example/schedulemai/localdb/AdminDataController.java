@@ -7,17 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.example.schedulemai.asynctasks.DbTaskFactory;
-import com.example.schedulemai.lesson.Lesson;
 import com.example.schedulemai.SP;
+import com.example.schedulemai.clouddb.CloudDBOpenHelper;
+import com.example.schedulemai.clouddb.StudentCloudDBOpenHelper;
+import com.example.schedulemai.lesson.Lesson;
 import com.example.schedulemai.lesson.LessonFactory;
 import com.example.schedulemai.lesson.LessonType;
 import com.example.schedulemai.student.StudentScheduleActivity;
-import com.example.schedulemai.clouddb.CloudDBOpenHelper;
-import com.example.schedulemai.clouddb.StudentCloudDBOpenHelper;
 
-public class StudentDataController extends DataController{
-    public StudentDataController(){
+public class AdminDataController extends DataController{
+    public AdminDataController(){
         super();
     }
      public SQLiteDatabase getOpenedCloudDatabase(Context cont, String daySt) {
@@ -132,38 +131,20 @@ public class StudentDataController extends DataController{
         String[][] values = new String[count][COLUMN_COUNT];
         GetValues(count, values, 0, c);
 
-        Lesson prevLesson = null;
         for (int i = 0; i < count; i++) {
-
-            String lessonType = values[i][1] == null ? "" : values[i][1];
-            String lessonName = values[i][0] == null ? "" : values[i][0];
+            String lessonType = values[i][1];
+            String lessonName = values[i][0];
             String teacherFn = values[i][6];
             String classroom = values[i][2];
             String timeBegin = values[i][3];
             String timeEnd = values[i][4];
             String dateSt = values[i][5];
             String recordID = values[i][7];
-
-            if (prevLesson != null) {
-                if (lessonName.equals(prevLesson.getName())
-                        && timeBegin.equals(prevLesson.getTimeBegin())) {
-                    prevLesson.setTeacher(prevLesson.getTeacher() + "\n" + teacherFn);
-                }
-                else {
-                    StudentScheduleActivity.dc.add_to_db(prevLesson);
-                    prevLesson = LessonFactory.createLesson(recordID, lessonName,
-                            teacherFn, lessonType, timeBegin, timeEnd,
-                            classroom, dateSt, null);
-                }
-            } else {
-                prevLesson = LessonFactory.createLesson(recordID, lessonName,
-                        teacherFn, lessonType, timeBegin, timeEnd,
-                        classroom, dateSt, null);
-            }
-
+            Lesson lesson = LessonFactory.createLesson(recordID, lessonName,
+                    teacherFn, lessonType, timeBegin, timeEnd,
+                    classroom, dateSt, null);
+            StudentScheduleActivity.dc.add_to_db(lesson);
         }
-        //последнее занятие
-        StudentScheduleActivity.dc.add_to_db(prevLesson);
         c.close();
         // AddToDB(count, values, database);
         // database.close();

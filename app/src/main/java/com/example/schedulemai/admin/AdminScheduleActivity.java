@@ -27,6 +27,7 @@ import com.example.schedulemai.R;
 import com.example.schedulemai.SP;
 import com.example.schedulemai.authentication.AuthenticationActivity;
 import com.example.schedulemai.lesson.Lesson;
+import com.example.schedulemai.localdb.AdminDataController;
 import com.example.schedulemai.localdb.DataController;
 import com.example.schedulemai.localdb.StudentDataController;
 
@@ -45,7 +46,7 @@ import java.util.Map;
 public class AdminScheduleActivity extends AppCompatActivity {
 
     Context cont = this;
-    public static DataController dc = new StudentDataController();
+    public static DataController dc = new AdminDataController();
     public static SimpleAdapter adapter;
     public static ArrayList<Map<String, Object>> data;
 

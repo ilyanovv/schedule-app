@@ -206,8 +206,8 @@ public class StudentScheduleActivity extends AppCompatActivity {
     public void onDestroy(){
         // Очистите все ресурсы. Это касается завершения работы
         // потоков, закрытия соединений с базой данных и т. д.
-        dc.database.close();
-        dc.database = null;
+        //dc.database.close();
+        //dc.database = null;
         super.onDestroy();
     }
 
